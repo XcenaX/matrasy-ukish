@@ -1,0 +1,25 @@
+a[href*="/plugins/content-type-builder"],
+a[href*="/marketplace"],
+a[href*="/settings"] {
+  display: none !important;
+}
+
+a[href*="plugin::users-permissions.user"] {
+  align-items: center !important;
+  color: #32324d !important;
+  display: flex !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  min-height: 32px !important;
+  padding: 0 12px !important;
+}
+
+body {
+  background: #f7f7fb;
+}
+
+input,
+textarea,
+select {
+  color: #1f2937;
+}

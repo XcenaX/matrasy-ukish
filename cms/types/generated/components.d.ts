@@ -1,0 +1,84 @@
+import type { Schema, Struct } from '@strapi/strapi';
+
+export interface OrderItem extends Struct.ComponentSchema {
+  collectionName: 'components_order_items';
+  info: {
+    description: '\u0422\u043E\u0432\u0430\u0440 \u0432\u043D\u0443\u0442\u0440\u0438 \u0437\u0430\u043A\u0430\u0437\u0430';
+    displayName: '\u041F\u043E\u0437\u0438\u0446\u0438\u044F \u0437\u0430\u043A\u0430\u0437\u0430';
+  };
+  attributes: {
+    price: Schema.Attribute.Integer &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMax<
+        {
+          min: 0;
+        },
+        number
+      >;
+    productId: Schema.Attribute.String;
+    quantity: Schema.Attribute.Integer &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMax<
+        {
+          min: 1;
+        },
+        number
+      > &
+      Schema.Attribute.DefaultTo<1>;
+    size: Schema.Attribute.String;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface ProductBenefit extends Struct.ComponentSchema {
+  collectionName: 'components_product_benefits';
+  info: {
+    description: '\u041A\u043E\u0440\u043E\u0442\u043A\u0438\u0439 \u0430\u0440\u0433\u0443\u043C\u0435\u043D\u0442 \u043D\u0430 \u043A\u0430\u0440\u0442\u043E\u0447\u043A\u0435 \u0442\u043E\u0432\u0430\u0440\u0430';
+    displayName: '\u041F\u0440\u0435\u0438\u043C\u0443\u0449\u0435\u0441\u0442\u0432\u043E';
+  };
+  attributes: {
+    text: Schema.Attribute.Text & Schema.Attribute.Required;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface ProductGalleryImage extends Struct.ComponentSchema {
+  collectionName: 'components_product_gallery_images';
+  info: {
+    description: '\u0418\u0437\u043E\u0431\u0440\u0430\u0436\u0435\u043D\u0438\u0435 \u0442\u043E\u0432\u0430\u0440\u0430';
+    displayName: '\u0424\u043E\u0442\u043E \u0433\u0430\u043B\u0435\u0440\u0435\u0438';
+  };
+  attributes: {
+    image: Schema.Attribute.Media<'images'> & Schema.Attribute.Required;
+  };
+}
+
+export interface ProductSize extends Struct.ComponentSchema {
+  collectionName: 'components_product_sizes';
+  info: {
+    description: '\u0412\u0430\u0440\u0438\u0430\u043D\u0442 \u0440\u0430\u0437\u043C\u0435\u0440\u0430 \u0442\u043E\u0432\u0430\u0440\u0430';
+    displayName: '\u0420\u0430\u0437\u043C\u0435\u0440 \u0438 \u0446\u0435\u043D\u0430';
+  };
+  attributes: {
+    price: Schema.Attribute.Integer &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMax<
+        {
+          min: 0;
+        },
+        number
+      >;
+    size: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+declare module '@strapi/strapi' {
+  export module Public {
+    export interface ComponentSchemas {
+      'order.item': OrderItem;
+      'product.benefit': ProductBenefit;
+      'product.gallery-image': ProductGalleryImage;
+      'product.size': ProductSize;
+    }
+  }
+}

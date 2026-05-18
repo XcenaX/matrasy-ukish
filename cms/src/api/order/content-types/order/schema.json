@@ -1,0 +1,57 @@
+{
+  "kind": "collectionType",
+  "collectionName": "ukish_orders",
+  "info": {
+    "singularName": "order",
+    "pluralName": "orders",
+    "displayName": "Заказы",
+    "description": "Заявки из корзины сайта"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "orderNumber": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "orderStatus": {
+      "type": "enumeration",
+      "enum": ["Новый", "В работе", "Завершен", "Отменен"],
+      "required": true,
+      "default": "Новый"
+    },
+    "customerName": {
+      "type": "string",
+      "required": true
+    },
+    "phone": {
+      "type": "string",
+      "required": true
+    },
+    "city": {
+      "type": "string"
+    },
+    "address": {
+      "type": "text"
+    },
+    "paymentMethod": {
+      "type": "string"
+    },
+    "comment": {
+      "type": "text"
+    },
+    "items": {
+      "type": "component",
+      "repeatable": true,
+      "component": "order.item",
+      "required": true
+    },
+    "total": {
+      "type": "integer",
+      "required": true,
+      "min": 0
+    }
+  }
+}

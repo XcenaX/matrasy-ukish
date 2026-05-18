@@ -1,0 +1,30 @@
+{
+  "collectionName": "components_order_items",
+  "info": {
+    "displayName": "Позиция заказа",
+    "description": "Товар внутри заказа"
+  },
+  "attributes": {
+    "productId": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "size": {
+      "type": "string"
+    },
+    "quantity": {
+      "type": "integer",
+      "required": true,
+      "default": 1,
+      "min": 1
+    },
+    "price": {
+      "type": "integer",
+      "required": true,
+      "min": 0
+    }
+  }
+}

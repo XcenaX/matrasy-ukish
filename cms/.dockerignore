@@ -1,0 +1,8 @@
+node_modules
+build
+dist
+.cache
+.tmp
+.strapi
+.env
+npm-debug.log
