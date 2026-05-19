@@ -9,7 +9,7 @@ EMAIL="${2:?Usage: ./init-ssl.sh <domain> <email>}"
 
 echo "→ Получаю сертификат для $DOMAIN ..."
 
-docker compose -f docker-compose.prod.yml run --rm certbot certonly \
+docker compose -f docker-compose.prod.yml run --rm --entrypoint certbot certbot certonly \
   --webroot \
   --webroot-path=/var/www/certbot \
   --email "$EMAIL" \
@@ -18,8 +18,6 @@ docker compose -f docker-compose.prod.yml run --rm certbot certonly \
   -d "$DOMAIN"
 
 echo "→ Сертификат получен."
-echo "→ Переключаю nginx на production-конфиг..."
-
 # Подмена bootstrap.conf на api.conf уже сделана в DEPLOY.md шагами.
 # Этот скрипт только получает сертификат.
 
