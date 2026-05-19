@@ -84,6 +84,8 @@ export default {
         'content-manager.containers.List.published': 'Опубликован',
         'content-manager.containers.edit.panels.default.title': 'Запись',
         'content-manager.containers.edit.panels.default.more-actions': 'Дополнительные действия',
+        'content-manager.containers.edit.title.new': 'Создать запись',
+        'content-manager.containers.edit.header.more-actions': 'Дополнительные действия',
         'content-manager.containers.edit.tabs.draft': 'Черновик',
         'content-manager.containers.edit.tabs.published': 'Опубликовано',
         'content-manager.containers.edit.tabs.label': 'Статус записи',
