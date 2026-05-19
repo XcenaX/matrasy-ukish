@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { Logo } from './logo'
 
 const nav = [
-  { href: '/catalog', label: 'Каталог' },
+  { href: '/catalog/', label: 'Каталог' },
   { href: '/#collections', label: 'Коллекции' },
   { href: '/#about', label: 'О нас' },
   { href: '/#delivery', label: 'Доставка и оплата' },
@@ -40,7 +40,7 @@ export function Header({ transparent = false }: { transparent?: boolean }) {
               <img src="/whatsapp.svg" alt="WhatsApp" className="h-[18px] w-[18px]" />
             </a>      
           </span>
-          <Link aria-label="Корзина" href="/cart" className="inline-flex">
+          <Link aria-label="Корзина" href="/cart/" className="inline-flex">
             <ShoppingBag size={19} />
           </Link>
         </div>
@@ -69,8 +69,8 @@ export function Footer() {
         <div className="flex flex-col gap-4 pt-10 text-[10px] text-white/30 md:flex-row md:items-center md:justify-between">
           <p>© 2026 UKISH MATTRESS. Все права защищены.</p>
           <div className="flex gap-8">
-            <Link href="/privacy">Политика конфиденциальности</Link>
-            <Link href="/offer">Договор оферты</Link>
+            <Link href="/privacy/">Политика конфиденциальности</Link>
+            <Link href="/offer/">Договор оферты</Link>
           </div>
         </div>
       </div>
@@ -85,7 +85,7 @@ function FooterColumn({ title, items }: { title: string; items: string[] }) {
       <ul className="mt-9 space-y-5 text-sm text-slate-400">
         {items.map((item) => (
           <li key={item}>
-            <Link href="/catalog" className="hover:text-white">
+            <Link href="/catalog/" className="hover:text-white">
               {item}
             </Link>
           </li>

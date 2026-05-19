@@ -1,0 +1,28 @@
+# UKISH Mattress
+
+UKISH Mattress is a mattress brand and manufacturer in Kazakhstan. The website helps customers browse orthopedic, premium, children's, and basic mattress collections, compare sizes and prices, and submit an order request.
+
+## Primary URLs
+
+- Website: https://matras-ukish.kz/
+- Catalog: https://matras-ukish.kz/catalog
+- Sitemap: https://matras-ukish.kz/sitemap.xml
+- Robots: https://matras-ukish.kz/robots.txt
+- Product API: https://api.matras-ukish.kz/api/products
+
+## Important Pages
+
+- Home page: product highlights, manufacturing benefits, delivery, consultation form, customer reviews.
+- Catalog: filterable mattress catalog with live data from the Strapi API.
+- Product pages: static SEO-friendly pages at `/product/{slug}` with live client-side refresh from Strapi.
+- Cart and checkout: customer order flow; these pages are intentionally not indexed.
+
+## Products
+
+The current catalog includes Diamond King, Diamond Prime, Smart, Kids Comfort, Classic Sleep2, and Ortho Hard. Product data is managed in Strapi and exposed through the public API.
+
+## Contact
+
+- Phone: +7 (702) 123 45 67
+- WhatsApp: https://wa.me/77021234567
+- City: Almaty, Kazakhstan

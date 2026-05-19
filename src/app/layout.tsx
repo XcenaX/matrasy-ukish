@@ -10,12 +10,37 @@ export const metadata: Metadata = {
   },
   description:
     'Премиальные ортопедические матрасы UKISH с собственным производством, доставкой по Казахстану и гарантией до 10 лет.',
+  keywords: [
+    'матрасы Алматы',
+    'ортопедические матрасы',
+    'матрасы Казахстан',
+    'UKISH Mattress',
+    'купить матрас',
+  ],
+  alternates: {
+    canonical: '/',
+  },
   openGraph: {
     title: 'UKISH Mattress',
     description: 'Премиальные ортопедические матрасы с доставкой по Казахстану.',
+    url: '/',
     siteName: 'UKISH Mattress',
     locale: 'ru_KZ',
     type: 'website',
+    images: [
+      {
+        url: '/assets/hero.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'UKISH Mattress',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'UKISH Mattress',
+    description: 'Премиальные ортопедические матрасы с доставкой по Казахстану.',
+    images: ['/assets/hero.jpg'],
   },
 }
 

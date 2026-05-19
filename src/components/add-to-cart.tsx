@@ -50,7 +50,7 @@ export function AddToCart({ product }: { product: StoreProduct }) {
             size: selected?.size || selectedSize,
             price: selected?.price || product.price,
           })
-          router.push('/cart')
+          router.push('/cart/')
         }}
       >
         <ShoppingBag size={16} />

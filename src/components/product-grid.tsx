@@ -63,7 +63,7 @@ function updateCatalogUrl(collection: CollectionFilter, hardness: HardnessFilter
   if (hardness !== 'all') browserPath.set('hardness', hardness)
   if (sort !== 'popular') browserPath.set('sort', sort)
   const browserQuery = browserPath.toString()
-  window.history.replaceState(null, '', `/catalog${browserQuery ? '?' + browserQuery : ''}`)
+  window.history.replaceState(null, '', `/catalog/${browserQuery ? '?' + browserQuery : ''}`)
 }
 
 export function ProductGrid({ initialProducts, limit }: { initialProducts: StoreProduct[]; limit?: number }) {

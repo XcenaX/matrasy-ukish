@@ -1,7 +1,13 @@
 import { Check } from 'lucide-react'
 import Link from 'next/link'
+import type { Metadata } from 'next'
 
 import { Footer, Header } from '@/components/site-shell'
+
+export const metadata: Metadata = {
+  title: 'Заказ принят',
+  robots: { index: false, follow: false },
+}
 
 export default function ConfirmPage() {
   return (

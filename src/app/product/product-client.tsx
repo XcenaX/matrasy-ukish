@@ -10,11 +10,16 @@ import { Footer, Header } from '@/components/site-shell'
 import { fetchProductFromStrapi } from '@/lib/products'
 import { formatPrice, type StoreProduct } from '@/lib/seed-data'
 
-export function ProductClient() {
+type ProductClientProps = {
+  initialSlug?: string
+  initialProduct?: StoreProduct | null
+}
+
+export function ProductClient({ initialSlug = '', initialProduct = null }: ProductClientProps) {
   const searchParams = useSearchParams()
-  const slug = searchParams.get('slug') || ''
-  const [product, setProduct] = useState<StoreProduct | null>(null)
-  const [loading, setLoading] = useState(true)
+  const slug = initialSlug || searchParams.get('slug') || ''
+  const [product, setProduct] = useState<StoreProduct | null>(initialProduct)
+  const [loading, setLoading] = useState(!initialProduct)
 
   useEffect(() => {
     if (!slug) {
@@ -23,12 +28,21 @@ export function ProductClient() {
       return
     }
 
-    setLoading(true)
+    if (!initialProduct || initialProduct.slug !== slug) {
+      setLoading(true)
+    }
+
+    let isMounted = true
     fetchProductFromStrapi(slug).then((p) => {
-      setProduct(p)
+      if (!isMounted) return
+      setProduct(p || initialProduct)
       setLoading(false)
     })
-  }, [slug])
+
+    return () => {
+      isMounted = false
+    }
+  }, [initialProduct, slug])
 
   return (
     <div className="site-page">

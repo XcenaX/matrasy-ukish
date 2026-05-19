@@ -53,3 +53,5 @@ screenshots/
 
 # strapi dist (rebuilt on deploy)
 /cms/dist/
+
+backup.zip
