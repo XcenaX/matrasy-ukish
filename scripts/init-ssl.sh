@@ -9,6 +9,9 @@ EMAIL="${2:?Usage: ./init-ssl.sh <domain> <email>}"
 
 echo "→ Получаю сертификат для $DOMAIN ..."
 
+mkdir -p docker/nginx/certbot/.well-known/acme-challenge
+chmod -R a+rX docker/nginx/certbot
+
 docker compose -f docker-compose.prod.yml run --rm --entrypoint certbot certbot certonly \
   --webroot \
   --webroot-path=/var/www/certbot \
