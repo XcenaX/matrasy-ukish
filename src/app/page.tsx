@@ -6,7 +6,7 @@ import { AnimateIn, StaggerItem, StaggerList } from '@/components/animate-in'
 import { ConsultForm } from '@/components/consult-form'
 import { ProductGrid } from '@/components/product-grid'
 import { Footer, Header } from '@/components/site-shell'
-import { getStoreProducts } from '@/lib/products'
+import { seedProducts } from '@/lib/seed-data'
 
 const features = [
   { icon: Factory, label: 'Собственное производство' },
@@ -34,9 +34,7 @@ const reviews = [
   ['Елена', 'г. Шымкент', 'Заказывали матрас для ребенка из коллекции Kids. Нет никакого запаха, чехол приятный на ощупь. Ребенок спит отлично.'],
 ]
 
-export default async function Home() {
-  const products = await getStoreProducts()
-
+export default function Home() {
   return (
     <div className="site-page">
       <main className="bg-[#faf8f5]">
@@ -100,7 +98,7 @@ export default async function Home() {
               </Link>
             </AnimateIn>
             <AnimateIn delay={0.15}>
-              <ProductGrid initialProducts={products} limit={4} />
+              <ProductGrid initialProducts={seedProducts} limit={4} />
             </AnimateIn>
           </div>
         </section>

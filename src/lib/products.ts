@@ -1,5 +1,9 @@
 import { collectionLabels, hardnessLabels, seedProducts, type StoreProduct } from './seed-data'
 
+export function getStrapiPublicUrl() {
+  return (process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337').replace(/\/$/, '')
+}
+
 type StrapiMedia = {
   url?: string | null
   alternativeText?: string | null
@@ -162,4 +166,37 @@ export async function getStoreProducts(): Promise<StoreProduct[]> {
 export async function getStoreProduct(slug: string): Promise<StoreProduct | null> {
   const products = await getStoreProducts()
   return products.find((product) => product.slug === slug) || null
+}
+
+// Client-side helpers call Strapi directly from the browser.
+
+function buildStrapiProductsParams() {
+  const params = new URLSearchParams({
+    'filters[active][$eq]': 'true',
+    'pagination[pageSize]': '100',
+    sort: 'sortOrder:asc',
+  })
+  params.set('populate[image]', 'true')
+  params.set('populate[gallery][populate][image]', 'true')
+  params.set('populate[sizes]', 'true')
+  params.set('populate[benefits]', 'true')
+  return params
+}
+
+export async function fetchProductsFromStrapi(): Promise<StoreProduct[]> {
+  const base = getStrapiPublicUrl()
+  try {
+    const res = await fetch(`${base}/api/products?${buildStrapiProductsParams()}`)
+    if (!res.ok) return seedProducts
+    const payload = (await res.json()) as StrapiListResponse
+    const products = payload.data?.map(normalizeProduct).filter(Boolean) as StoreProduct[] | undefined
+    return products?.length ? products : seedProducts
+  } catch {
+    return seedProducts
+  }
+}
+
+export async function fetchProductFromStrapi(slug: string): Promise<StoreProduct | null> {
+  const products = await fetchProductsFromStrapi()
+  return products.find((p) => p.slug === slug) || null
 }

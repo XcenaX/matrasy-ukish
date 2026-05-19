@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react'
 
+import { fetchProductsFromStrapi } from '@/lib/products'
 import { type StoreProduct } from '@/lib/seed-data'
 
 import { ProductCard } from './product-card'
@@ -56,15 +57,13 @@ function filterAndSortProducts(
   return result
 }
 
-function buildProductsUrl(collection: CollectionFilter, hardness: HardnessFilter, sort: SortOption) {
-  const params = new URLSearchParams()
-
-  if (collection !== 'all') params.set('collection', collection)
-  if (hardness !== 'all') params.set('hardness', hardness)
-  if (sort !== 'popular') params.set('sort', sort)
-
-  const query = params.toString()
-  return query ? `/api/products?${query}` : '/api/products'
+function updateCatalogUrl(collection: CollectionFilter, hardness: HardnessFilter, sort: SortOption) {
+  const browserPath = new URLSearchParams()
+  if (collection !== 'all') browserPath.set('collection', collection)
+  if (hardness !== 'all') browserPath.set('hardness', hardness)
+  if (sort !== 'popular') browserPath.set('sort', sort)
+  const browserQuery = browserPath.toString()
+  window.history.replaceState(null, '', `/catalog${browserQuery ? '?' + browserQuery : ''}`)
 }
 
 export function ProductGrid({ initialProducts, limit }: { initialProducts: StoreProduct[]; limit?: number }) {
@@ -99,22 +98,23 @@ export function ProductGrid({ initialProducts, limit }: { initialProducts: Store
   useEffect(() => {
     if (limit) return
 
-    const url = buildProductsUrl(collection, hardness, sort)
+    updateCatalogUrl(collection, hardness, sort)
     const controller = new AbortController()
 
     setIsLoading(true)
 
-    fetch(url, { signal: controller.signal })
-      .then((response) => response.json())
-      .then((data: { docs?: StoreProduct[] }) => {
-        setProducts(data.docs || [])
+    fetchProductsFromStrapi()
+      .then((items) => {
+        if (!controller.signal.aborted) {
+          setProducts(filterAndSortProducts(items, collection, hardness, sort))
+        }
       })
       .catch(() => {
-        setProducts(filterAndSortProducts(initialProducts, collection, hardness, sort))
+        if (!controller.signal.aborted) {
+          setProducts(filterAndSortProducts(initialProducts, collection, hardness, sort))
+        }
       })
       .finally(() => setIsLoading(false))
-
-    window.history.replaceState(null, '', url.replace('/api/products', '/catalog'))
 
     return () => controller.abort()
   }, [collection, hardness, sort, initialProducts, limit])

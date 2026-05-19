@@ -8,7 +8,7 @@ export function ProductCard({ product }: { product: StoreProduct }) {
   const image = product.image || '/assets/diamond-prime.jpg'
 
   return (
-    <Link href={`/product/${product.slug}`} className="group block bg-white">
+    <Link href={`/product?slug=${encodeURIComponent(product.slug)}`} className="group block bg-white">
       <div className="relative aspect-[1.22] overflow-hidden bg-slate-100">
         <Image
           src={image}

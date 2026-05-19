@@ -2,16 +2,14 @@ import type { Metadata } from 'next'
 
 import { ProductGrid } from '@/components/product-grid'
 import { Footer, Header } from '@/components/site-shell'
-import { getStoreProducts } from '@/lib/products'
+import { seedProducts } from '@/lib/seed-data'
 
 export const metadata: Metadata = {
   title: 'Каталог матрасов',
   description: 'Каталог ортопедических матрасов UKISH: премиум, детские, базовые и ортопедические модели с доставкой по Казахстану.',
 }
 
-export default async function CatalogPage() {
-  const products = await getStoreProducts()
-
+export default function CatalogPage() {
   return (
     <div className="site-page">
       <Header />
@@ -24,7 +22,7 @@ export default async function CatalogPage() {
           </div>
 
           <div className="mt-14">
-            <ProductGrid initialProducts={products} />
+            <ProductGrid initialProducts={seedProducts} />
           </div>
         </div>
       </main>
