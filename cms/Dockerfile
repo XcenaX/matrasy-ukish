@@ -12,6 +12,7 @@ CMD ["npm", "run", "develop"]
 
 # --- PROD build ---
 FROM base AS builder
+ENV NODE_OPTIONS=--max-old-space-size=2048
 COPY package*.json ./
 RUN npm ci
 COPY . .
