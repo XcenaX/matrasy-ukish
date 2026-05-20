@@ -82,9 +82,34 @@ export function Footer() {
               </p>
             </div>
           </div>
-          <FooterColumn title="Каталог" items={['Все матрасы', 'Премиум коллекция', 'Ортопедические', 'Детские матрасы', 'Аксессуары для сна']} />
-          <FooterColumn title="Клиентам" items={['О компании', 'Доставка и оплата', 'Гарантия и возврат', 'Рассрочка', 'Отзывы покупателей']} />
-          <FooterColumn title="Мы в соцсетях" items={['Instagram', 'TikTok', 'WhatsApp', 'Telegram']} />
+          <FooterColumn
+            title="Каталог"
+            items={[
+              { label: 'Все матрасы', href: '/catalog/' },
+              { label: 'Премиум коллекция', href: '/catalog/' },
+              { label: 'Ортопедические', href: '/catalog/' },
+              { label: 'Детские матрасы', href: '/catalog/' },
+              { label: 'Аксессуары для сна', href: '/catalog/' },
+            ]}
+          />
+          <FooterColumn
+            title="Клиентам"
+            items={[
+              { label: 'О компании', href: '/catalog/' },
+              { label: 'Доставка и оплата', href: '/catalog/' },
+              { label: 'Гарантия и возврат', href: '/catalog/' },
+              { label: 'Рассрочка', href: '/catalog/' },
+              { label: 'Отзывы покупателей', href: '/catalog/' },
+            ]}
+          />
+          <FooterColumn
+            title="Мы в соцсетях"
+            items={[
+              { label: 'Instagram', href: 'https://www.instagram.com/ukish_mattress', icon: '/instagram.svg' },
+              { label: 'TikTok', href: 'https://www.tiktok.com/@ukish_mattress1', icon: '/tiktok.svg' },
+              { label: 'WhatsApp', href: `https://wa.me/${MAIN_PHONE_TEL.replace('+', '')}`, icon: '/whatsapp.svg' },
+            ]}
+          />
         </div>
         <div className="flex flex-col gap-4 pt-10 text-[10px] text-white/30 md:flex-row md:items-center md:justify-between">
           <p>© 2026 UKISH MATTRESS. Все права защищены.</p>
@@ -98,18 +123,37 @@ export function Footer() {
   )
 }
 
-function FooterColumn({ title, items }: { title: string; items: string[] }) {
+function FooterColumn({
+  title,
+  items,
+}: {
+  title: string
+  items: { label: string; href: string; icon?: string }[]
+}) {
   return (
     <div>
       <h3 className="eyebrow">{title}</h3>
       <ul className="mt-9 space-y-5 text-sm text-slate-400">
-        {items.map((item) => (
-          <li key={item}>
-            <Link href="/catalog/" className="hover:text-white">
-              {item}
-            </Link>
-          </li>
-        ))}
+        {items.map((item) => {
+          const external = item.href.startsWith('http')
+          const content = (
+            <span className="inline-flex items-center gap-3 hover:text-white">
+              {item.icon && <img src={item.icon} alt="" className="h-[18px] w-[18px]" />}
+              {item.label}
+            </span>
+          )
+          return (
+            <li key={item.label}>
+              {external ? (
+                <a href={item.href} target="_blank" rel="noopener noreferrer">
+                  {content}
+                </a>
+              ) : (
+                <Link href={item.href}>{content}</Link>
+              )}
+            </li>
+          )
+        })}
       </ul>
     </div>
   )
