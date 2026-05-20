@@ -6,7 +6,7 @@ import { seedProducts } from '@/lib/seed-data'
 
 export const metadata: Metadata = {
   title: 'Каталог матрасов',
-  description: 'Каталог ортопедических матрасов UKISH: премиум, детские, базовые и ортопедические модели с доставкой по Казахстану.',
+  description: 'Каталог ортопедических матрасов UKISH: премиум, детские, базовые и ортопедические модели с доставкой по Казахстану, включая Астану, Усть-Каменогорск и Караганду.',
 }
 
 export default function CatalogPage() {

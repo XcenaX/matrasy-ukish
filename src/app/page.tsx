@@ -1,4 +1,4 @@
-import { ArrowRight, BadgePercent, Factory, Gem, ShieldCheck, Truck } from 'lucide-react'
+import { ArrowRight, BadgePercent, Factory, Gem, MapPin, ShieldCheck, Truck } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -19,7 +19,7 @@ const features = [
 
 const reasons = [
   ['01', 'Собственное производство', 'Фабрика UKISH с собственными складами и автопарком для доставки'],
-  ['02', 'Бесплатная доставка', 'До кровати в день заказа по всему Казахстану'],
+  ['02', 'Бесплатная доставка', 'До кровати в день заказа по Казахстану, включая Астану, Усть-Каменогорск и Караганду'],
   ['03', 'Гарантия до 60 месяцев', 'Официальная гарантия от производителя'],
   ['04', 'Быстрое изготовление', 'Заказ готов в течение 1-3 дней'],
   ['05', 'Бесплатный замер', 'Наш специалист приедет к вам с образцами материалов'],
@@ -33,6 +33,8 @@ const reviews = [
   ['Максат', 'г. Астана', 'Доставили день в день, как и обещали. Матрас Smart оказался идеальной жесткости. Спасибо консультанту за помощь в выборе.'],
   ['Елена', 'г. Шымкент', 'Заказывали матрас для ребенка из коллекции Kids. Нет никакого запаха, чехол приятный на ощупь. Ребенок спит отлично.'],
 ]
+
+const cities = ['Алматы', 'Астана', 'Усть-Каменогорск', 'Караганда']
 
 export default function Home() {
   return (
@@ -54,7 +56,7 @@ export default function Home() {
                 идеального сна
               </h1>
               <p className="mt-9 max-w-md text-base leading-7 text-slate-200">
-                Собственное производство премиальных ортопедических матрасов в Казахстане
+                Собственное производство премиальных ортопедических матрасов в Казахстане. Мы есть в Алматы, Астане, Усть-Каменогорске и Караганде.
               </p>
               <div className="mt-12 flex flex-wrap gap-4">
                 <Link href="/catalog" className="btn-primary">
@@ -139,6 +141,27 @@ export default function Home() {
               <Image src="/assets/production.jpg" alt="Производство матрасов UKISH" fill className="object-cover grayscale" />
               <div className="absolute inset-0 bg-black/20" />
             </AnimateIn>
+          </div>
+        </section>
+
+        {/* Delivery */}
+        <section id="delivery" className="bg-[#faf8f5] pb-28">
+          <div className="container-wide grid gap-10 border-y border-slate-200 py-16 lg:grid-cols-[0.82fr_1.18fr] lg:items-center">
+            <AnimateIn variant="fade-up">
+              <p className="eyebrow text-slate-400">География</p>
+              <h2 className="serif mt-7 max-w-xl text-5xl leading-tight text-[#111827]">Мы есть в городах Казахстана</h2>
+              <p className="mt-7 max-w-xl text-base leading-7 text-slate-600">
+                Принимаем розничные и B2B-заявки, консультируем по подбору матраса и организуем доставку до двери.
+              </p>
+            </AnimateIn>
+            <StaggerList className="grid gap-4 sm:grid-cols-2" gap={0.08}>
+              {cities.map((city) => (
+                <StaggerItem key={city} className="flex min-h-[96px] items-center gap-5 bg-white px-7 py-6 shadow-sm shadow-black/5">
+                  <MapPin className="text-[var(--gold)]" size={22} strokeWidth={1.7} />
+                  <span className="serif text-2xl text-[#111827]">{city}</span>
+                </StaggerItem>
+              ))}
+            </StaggerList>
           </div>
         </section>
 

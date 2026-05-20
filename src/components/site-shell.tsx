@@ -3,6 +3,15 @@ import Link from 'next/link'
 
 import { Logo } from './logo'
 
+const KASPI_SHOP_URL = 'https://l.kaspi.kz/shop/AchLr5gWyD2QX7N'
+const MAIN_PHONE_DISPLAY = '+7 705 388 6887'
+const MAIN_PHONE_TEL = '+77053886887'
+const B2B_PHONE_DISPLAY = '+7 776 531 2506'
+const B2B_PHONE_TEL = '+77765312506'
+const RETAIL_PHONE_DISPLAY = '+7 775 514 6461'
+const RETAIL_PHONE_TEL = '+77755146461'
+const CONTACT_EMAIL = 'Astana.matrasy@gmail.com'
+
 const nav = [
   { href: '/catalog/', label: 'Каталог' },
   { href: '/#collections', label: 'Коллекции' },
@@ -28,15 +37,15 @@ export function Header({ transparent = false }: { transparent?: boolean }) {
           ))}
         </nav>
         <div className="flex items-center gap-5">
-          <a className="hidden text-sm text-white/95 sm:inline" href="tel:+77021234567">
-            +7 (702) 123 45 67
+          <a className="hidden text-sm text-white/95 sm:inline" href={`tel:${MAIN_PHONE_TEL}`}>
+            {MAIN_PHONE_DISPLAY}
           </a>
           <span className="hidden items-center gap-4 sm:flex">
-            <a href="#" aria-label="Kaspi">
+            <a href={KASPI_SHOP_URL} aria-label="Kaspi" target="_blank" rel="noopener noreferrer">
               <img src="/kaspi.svg" alt="Kaspi" className="h-[18px] w-[18px]" />
             </a>
 
-            <a href="https://wa.me/77021234567" aria-label="WhatsApp">
+            <a href="https://wa.me/77053886887" aria-label="WhatsApp" target="_blank" rel="noopener noreferrer">
               <img src="/whatsapp.svg" alt="WhatsApp" className="h-[18px] w-[18px]" />
             </a>      
           </span>
@@ -57,10 +66,21 @@ export function Footer() {
           <div>
             <Logo light />
             <p className="mt-10 text-sm text-slate-400">Ежедневно с 09:00 до 21:00</p>
-            <p className="mt-4 text-sm text-slate-400">г. Алматы, ул. Кабдолова, 1/8</p>
-            <a className="mt-8 block text-2xl text-white" href="tel:+77021234567">
-              +7 (702) 123 45 67
+            <p className="mt-4 text-sm leading-6 text-slate-400">Алматы, Астана, Усть-Каменогорск, Караганда</p>
+            <a className="mt-8 block text-2xl text-white" href={`tel:${MAIN_PHONE_TEL}`}>
+              {MAIN_PHONE_DISPLAY}
             </a>
+            <a className="mt-5 block text-sm text-slate-300 hover:text-white" href={`mailto:${CONTACT_EMAIL}`}>
+              {CONTACT_EMAIL}
+            </a>
+            <div className="mt-7 space-y-3 text-sm text-slate-400">
+              <p>
+                B2B: <a className="text-white hover:text-[var(--gold)]" href={`tel:${B2B_PHONE_TEL}`}>{B2B_PHONE_DISPLAY}</a> Магжан
+              </p>
+              <p>
+                Розница: <a className="text-white hover:text-[var(--gold)]" href={`tel:${RETAIL_PHONE_TEL}`}>{RETAIL_PHONE_DISPLAY}</a> Анеля
+              </p>
+            </div>
           </div>
           <FooterColumn title="Каталог" items={['Все матрасы', 'Премиум коллекция', 'Ортопедические', 'Детские матрасы', 'Аксессуары для сна']} />
           <FooterColumn title="Клиентам" items={['О компании', 'Доставка и оплата', 'Гарантия и возврат', 'Рассрочка', 'Отзывы покупателей']} />

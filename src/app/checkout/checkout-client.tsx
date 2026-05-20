@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react'
 import { useCartStore } from '@/lib/cart-store'
 import { formatPrice } from '@/lib/seed-data'
 
-const WHATSAPP_PHONE = '77088007177'
+const WHATSAPP_PHONE = '77053886887'
 
 const PAYMENT_LABELS: Record<string, string> = {
   card_on_delivery: 'Картой при получении',

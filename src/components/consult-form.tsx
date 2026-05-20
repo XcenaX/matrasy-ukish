@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 
-const WHATSAPP_PHONE = '77088007177'
+const WHATSAPP_PHONE = '77053886887'
 
 function WhatsAppIcon() {
   return (
