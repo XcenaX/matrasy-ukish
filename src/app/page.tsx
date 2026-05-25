@@ -8,6 +8,8 @@ import { ProductGrid } from '@/components/product-grid'
 import { Footer, Header } from '@/components/site-shell'
 import { seedProducts } from '@/lib/seed-data'
 
+const KASPI_SHOP_URL = 'https://l.kaspi.kz/shop/3vC4nEY6Qcv7Mta'
+
 const features = [
   { icon: Factory, label: 'Собственное производство' },
   { icon: Gem, label: 'Премиальные материалы' },
@@ -19,22 +21,20 @@ const features = [
 
 const reasons = [
   ['01', 'Собственное производство', 'Фабрика UKISH с собственными складами и автопарком для доставки'],
-  ['02', 'Бесплатная доставка', 'До кровати в день заказа по Казахстану, включая Астану, Усть-Каменогорск и Караганду'],
+  ['02', 'Доставка по Казахстану', 'Работаем по всему Казахстану и доставляем заказы до двери'],
   ['03', 'Гарантия до 60 месяцев', 'Официальная гарантия от производителя'],
   ['04', 'Быстрое изготовление', 'Заказ готов в течение 1-3 дней'],
-  ['05', 'Бесплатный замер', 'Наш специалист приедет к вам с образцами материалов'],
-  ['06', 'Сертифицированные материалы', 'Все материалы проходят строгий контроль качества'],
-  ['07', 'Тест-драйв 100 дней', 'Возможность обмена матраса, если не подошла жесткость'],
-  ['08', 'Честные цены', 'На 27% ниже рынка благодаря отсутствию посредников'],
+  ['05', 'Сертифицированные материалы', 'Все материалы проходят строгий контроль качества'],
+  ['06', 'Честные цены', 'На 27% ниже рынка благодаря отсутствию посредников'],
 ]
 
 const reviews = [
-  ['Айгерим', 'г. Алматы', 'Купили матрас Diamond Prime. Спим уже месяц, спина перестала болеть. Очень качественные материалы, сервис на высшем уровне!'],
+  ['Айгерим', 'г. Караганда', 'Купили матрас Diamond Prime. Спим уже месяц, спина перестала болеть. Очень качественные материалы, сервис на высшем уровне!'],
   ['Максат', 'г. Астана', 'Доставили день в день, как и обещали. Матрас Smart оказался идеальной жесткости. Спасибо консультанту за помощь в выборе.'],
   ['Елена', 'г. Шымкент', 'Заказывали матрас для ребенка из коллекции Kids. Нет никакого запаха, чехол приятный на ощупь. Ребенок спит отлично.'],
 ]
 
-const cities = ['Алматы', 'Астана', 'Усть-Каменогорск', 'Караганда']
+const cities = ['Астана', 'Караганда', 'Усть-Каменогорск']
 
 export default function Home() {
   return (
@@ -56,12 +56,15 @@ export default function Home() {
                 идеального сна
               </h1>
               <p className="mt-9 max-w-md text-base leading-7 text-slate-200">
-                Собственное производство премиальных ортопедических матрасов в Казахстане. Мы есть в Алматы, Астане, Усть-Каменогорске и Караганде.
+                Собственное производство премиальных ортопедических матрасов в Астане. Работаем по всему Казахстану, принимаем заказы в Астане, Караганде и Усть-Каменогорске.
               </p>
               <div className="mt-12 flex flex-wrap gap-4">
                 <Link href="/catalog" className="btn-primary">
                   Смотреть каталог
                 </Link>
+                <a href={KASPI_SHOP_URL} target="_blank" rel="noopener noreferrer" className="btn-outline">
+                  Kaspi магазин
+                </a>
                 <a href="#consult" className="btn-outline">
                   Получить консультацию
                 </a>
@@ -110,7 +113,7 @@ export default function Home() {
           <div className="container-wide">
             <AnimateIn>
               <p className="eyebrow">Почему выбирают нас</p>
-              <h2 className="section-title mt-7">8 причин купить матрас у нас</h2>
+              <h2 className="section-title mt-7">6 причин купить матрас у нас</h2>
             </AnimateIn>
             <StaggerList className="mt-16 grid gap-4 md:grid-cols-2 xl:grid-cols-4" gap={0.08}>
               {reasons.map(([number, title, text]) => (
@@ -128,12 +131,15 @@ export default function Home() {
         <section className="py-28">
           <div className="container-wide grid overflow-hidden bg-[#f3eee8] lg:grid-cols-2">
             <AnimateIn variant="fade-left" className="p-12 md:p-20">
-              <p className="eyebrow">Собственное производство</p>
-              <h2 className="serif mt-8 max-w-lg text-5xl leading-tight text-[#111827]">Контроль качества на каждом этапе</h2>
+              <p className="eyebrow">О компании</p>
+              <h2 className="serif mt-8 max-w-lg text-5xl leading-tight text-[#111827]">Ukish Matras - забота о качестве сна с 2018 года</h2>
               <p className="mt-8 max-w-sm text-base leading-7 text-slate-600">
-                Мы используем только проверенные материалы и современное оборудование, чтобы создавать матрасы премиального качества.
+                Производство находится в Астане. Компания работает в Караганде и Усть-Каменогорске, предлагая продукцию для розничных покупателей и оптовых партнеров.
               </p>
-              <Link href="/catalog" className="mt-12 inline-flex border border-slate-300 px-10 py-4 text-[10px] uppercase tracking-[0.2em] text-[#111827]">
+              <p className="mt-5 max-w-sm text-base leading-7 text-slate-600">
+                Каждое изделие создается с вниманием к деталям и проходит контроль качества на всех этапах производства.
+              </p>
+              <Link href="/catalog" className="mt-12 inline-flex min-h-12 items-center justify-center bg-[var(--brown)] px-10 py-4 text-[10px] uppercase tracking-[0.2em] text-white shadow-[0_18px_40px_-24px_rgba(42,31,26,0.75)] transition hover:bg-[var(--brown-soft)] active:translate-y-px">
                 Узнать больше
               </Link>
             </AnimateIn>
@@ -151,7 +157,7 @@ export default function Home() {
               <p className="eyebrow text-slate-400">География</p>
               <h2 className="serif mt-7 max-w-xl text-5xl leading-tight text-[#111827]">Мы есть в городах Казахстана</h2>
               <p className="mt-7 max-w-xl text-base leading-7 text-slate-600">
-                Принимаем розничные и B2B-заявки, консультируем по подбору матраса и организуем доставку до двери.
+                Работаем по всему Казахстану: принимаем розничные и B2B-заявки, консультируем по подбору матраса и организуем доставку до двери.
               </p>
             </AnimateIn>
             <StaggerList className="grid gap-4 sm:grid-cols-2" gap={0.08}>

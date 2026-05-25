@@ -61,7 +61,7 @@ export function CheckoutClient() {
         <h2 className="serif text-3xl text-[#111827]">Доставка</h2>
         <div className="mt-6 h-px bg-slate-100" />
         <div className="mt-8 grid gap-6">
-          <Field label="Город *" placeholder="Алматы" value={city} onChange={setCity} />
+          <Field label="Город *" placeholder="Астана" value={city} onChange={setCity} />
           <Field label="Адрес (улица, дом, квартира) *" placeholder="ул. Абая, д. 1, кв. 1" value={address} onChange={setAddress} />
         </div>
 
