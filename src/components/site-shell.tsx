@@ -75,7 +75,7 @@ export function Footer() {
         <div className="grid gap-12 border-b border-white/10 pb-16 md:grid-cols-4">
           <div>
             <Logo light />
-            <p className="mt-10 text-sm text-slate-400">Ежедневно с 09:00 до 21:00</p>
+            <p className="mt-10 text-sm text-slate-400">Ежедневно с 10:00 до 20:00</p>
             <p className="mt-4 text-sm leading-6 text-slate-400">Работаем по всему Казахстану: Астана, Караганда, Усть-Каменогорск</p>
             <a className="mt-8 block text-2xl text-white" href={`tel:${MAIN_PHONE_TEL}`}>
               {MAIN_PHONE_DISPLAY}
@@ -126,7 +126,7 @@ export function Footer() {
           <FooterColumn
             title="Клиентам"
             items={[
-              { label: 'О компании', href: '/catalog/' },
+              { label: 'О компании', href: '/#about-company' },
               { label: 'Доставка и оплата', href: '/catalog/' },
               { label: 'Гарантия и возврат', href: '/catalog/' },
               { label: 'Рассрочка', href: '/catalog/' },

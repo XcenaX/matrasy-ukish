@@ -101,6 +101,11 @@ select {
   letter-spacing: 0;
 }
 
+.partner-logo-img {
+  filter: brightness(0) saturate(100%) invert(69%) sepia(9%) saturate(421%) hue-rotate(344deg) brightness(89%) contrast(86%);
+  opacity: 0.94;
+}
+
 #collections .section-title,
 #about .section-title {
   max-width: none;
