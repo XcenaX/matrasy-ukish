@@ -42,7 +42,10 @@ const partners = [
   { name: 'Wyndham Garden', src: '/assets/partners/wyndham.svg', className: 'h-[57px] w-56' },
   { name: 'Törre', src: '/assets/partners/torre.svg', className: 'h-[38px] w-[220px]' },
   { name: 'Arabtec', src: '/assets/partners/arabtec.png', className: 'h-24 w-[105px]' },
-  { name: 'Amanat Mental Clinic', mark: '◎', lines: ['AMANAT', 'MENTAL CLINIC'] },
+  { name: 'Global Construction Development', src: '/assets/partners/global-construction-development.svg', className: 'h-[82px] w-[190px]' },
+  { name: 'Burabay Hotel', src: '/assets/partners/burabay-hotel.svg', className: 'h-[92px] w-[112px]' },
+  { name: 'Saryarka', src: '/assets/partners/saryarka.svg', className: 'h-[86px] w-[112px]' },
+  { name: 'Amanat Mental Clinic', src: '/assets/partners/amanat-mental-clinic.svg', className: 'h-[86px] w-[185px]' },
 ]
 
 export default function Home() {
@@ -269,21 +272,10 @@ export default function Home() {
                 Мы работаем с ведущими брендами и компаниями, которым доверяем и которые доверяют нам
               </p>
             </AnimateIn>
-            <StaggerList className="mt-20 grid items-center gap-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6" gap={0.08}>
+            <StaggerList className="partners-grid mt-20 grid items-center gap-7 sm:gap-10" gap={0.08}>
               {partners.map((partner) => (
                 <StaggerItem key={partner.name} className="flex min-h-[96px] items-center justify-center">
-                  {'src' in partner ? (
-                    <img alt={partner.name} className={`partner-logo-img object-contain ${partner.className}`} src={partner.src} />
-                  ) : (
-                    <div aria-label={partner.name} className="flex items-center gap-4 text-[#a89b8f] opacity-95">
-                      <span className="text-5xl leading-none">{partner.mark}</span>
-                      <span className="grid gap-1 text-[13px] font-bold uppercase leading-none tracking-[0.08em]">
-                        {partner.lines.map((line) => (
-                          <span key={line}>{line}</span>
-                        ))}
-                      </span>
-                    </div>
-                  )}
+                  <img alt={partner.name} className={`partner-logo-img object-contain ${partner.className}`} src={partner.src} />
                 </StaggerItem>
               ))}
             </StaggerList>

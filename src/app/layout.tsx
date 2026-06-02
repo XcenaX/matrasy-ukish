@@ -22,6 +22,10 @@ export const metadata: Metadata = {
   alternates: {
     canonical: '/',
   },
+  icons: {
+    icon: '/favicon-ukish.ico',
+    shortcut: '/favicon-ukish.ico',
+  },
   openGraph: {
     title: 'UKISH Mattress',
     description: 'Премиальные ортопедические матрасы с доставкой по Казахстану, включая Астану, Усть-Каменогорск и Караганду.',

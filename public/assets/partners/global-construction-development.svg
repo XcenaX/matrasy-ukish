@@ -1,0 +1,12 @@
+<svg width="260" height="112" viewBox="0 0 260 112" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title">
+  <title id="title">Global Construction Development</title>
+  <g fill="#A99D92">
+    <path d="M43 4l39 52-39 52L4 56 43 4zm0 17L17 56l26 35 26-35-26-35z"/>
+    <path opacity=".72" d="M43 13l8 43-8 43-8-43 8-43z"/>
+    <path opacity=".72" d="M13 56h60L43 66 13 56z"/>
+    <path opacity=".5" d="M43 21l19 35-19-6-19 6 19-35zm0 70L24 56l19 6 19-6-19 35z"/>
+  </g>
+  <text x="104" y="45" fill="#A99D92" font-family="Montserrat, Arial, sans-serif" font-size="17" font-weight="700" letter-spacing=".4">GLOBAL</text>
+  <text x="104" y="66" fill="#A99D92" font-family="Montserrat, Arial, sans-serif" font-size="17" font-weight="700" letter-spacing=".4">CONSTRUCTION</text>
+  <text x="104" y="87" fill="#A99D92" font-family="Montserrat, Arial, sans-serif" font-size="17" font-weight="700" letter-spacing=".4">DEVELOPMENT</text>
+</svg>

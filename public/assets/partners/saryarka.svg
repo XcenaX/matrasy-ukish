@@ -1,0 +1,9 @@
+<svg width="150" height="150" viewBox="0 0 150 150" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title">
+  <title id="title">Saryarka</title>
+  <circle cx="75" cy="75" r="56" stroke="#A99D92" stroke-width="4"/>
+  <circle cx="75" cy="75" r="46" stroke="#A99D92" stroke-width="1.5" opacity=".65"/>
+  <circle cx="75" cy="75" r="34" stroke="#A99D92" stroke-width="1.5" opacity=".65"/>
+  <path d="M75 39c15 0 27 10 31 24-7-8-16-12-28-12-18 0-30 12-30 29 0 13 9 24 22 27-17-2-31-16-31-34 0-19 16-34 36-34z" fill="#A99D92"/>
+  <path d="M91 47c-8 5-11 12-10 20 1 11 10 19 22 20-6 9-16 15-28 15-15 0-27-9-31-22 7 7 16 10 28 10 17 0 29-12 29-27 0-6-3-12-10-16z" fill="#A99D92" opacity=".86"/>
+  <path d="M75 61l9 14-9 14-9-14 9-14z" fill="#2A1F1A" opacity=".45"/>
+</svg>

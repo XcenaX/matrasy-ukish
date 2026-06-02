@@ -1,0 +1,10 @@
+<svg width="150" height="150" viewBox="0 0 150 150" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title">
+  <title id="title">Burabay Hotel</title>
+  <circle cx="75" cy="75" r="58" fill="#A99D92" opacity=".22"/>
+  <circle cx="75" cy="75" r="55" stroke="#A99D92" stroke-width="4"/>
+  <circle cx="75" cy="75" r="43" stroke="#A99D92" stroke-width="2" opacity=".7"/>
+  <path d="M45 58c9-13 19-19 30-19s21 6 30 19c-9-5-18-7-30-7s-21 2-30 7z" fill="#A99D92"/>
+  <path d="M44 80c10-7 20-10 31-10s21 3 31 10c-11-3-21-5-31-5s-20 2-31 5z" fill="#A99D92" opacity=".85"/>
+  <text x="75" y="99" text-anchor="middle" fill="#A99D92" font-family="Montserrat, Arial, sans-serif" font-size="16" font-weight="700" letter-spacing=".8">BURABAY</text>
+  <text x="75" y="116" text-anchor="middle" fill="#A99D92" font-family="Montserrat, Arial, sans-serif" font-size="12" font-weight="600" letter-spacing="2.4">HOTEL</text>
+</svg>
