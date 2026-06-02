@@ -42,10 +42,10 @@ const partners = [
   { name: 'Wyndham Garden', src: '/assets/partners/wyndham.svg', className: 'h-[57px] w-56' },
   { name: 'Törre', src: '/assets/partners/torre.svg', className: 'h-[38px] w-[220px]' },
   { name: 'Arabtec', src: '/assets/partners/arabtec.png', className: 'h-24 w-[105px]' },
-  { name: 'Global Construction Development', src: '/assets/partners/global-construction-development.svg', className: 'h-[82px] w-[190px]' },
-  { name: 'Burabay Hotel', src: '/assets/partners/burabay-hotel.svg', className: 'h-[92px] w-[112px]' },
-  { name: 'Saryarka', src: '/assets/partners/saryarka.svg', className: 'h-[86px] w-[112px]' },
-  { name: 'Amanat Mental Clinic', src: '/assets/partners/amanat-mental-clinic.svg', className: 'h-[86px] w-[185px]' },
+  { name: 'Global Construction Development', src: '/assets/partners/global-construction-development.svg', className: 'partner-logo-original h-[82px] w-[174px]' },
+  { name: 'Burabay Hotel', src: '/assets/partners/burabay-hotel.svg', className: 'partner-logo-original h-[92px] w-[99px]' },
+  { name: 'Saryarka', src: '/assets/partners/saryarka.svg', className: 'partner-logo-original h-[86px] w-[88px]' },
+  { name: 'Amanat Mental Clinic', src: '/assets/partners/amanat-mental-clinic.svg', className: 'partner-logo-original h-[86px] w-[78px]' },
 ]
 
 export default function Home() {
