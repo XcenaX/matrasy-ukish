@@ -44,7 +44,7 @@ services:
       DATABASE_USERNAME: ukish
       DATABASE_PASSWORD: ukish_password
       DATABASE_SSL: "false"
-      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost:3000}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost:3000,http://127.0.0.1:3000}
     ports:
       - "1337:1337"
     volumes:

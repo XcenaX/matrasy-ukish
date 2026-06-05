@@ -1,0 +1,29 @@
+{
+  "kind": "singleType",
+  "collectionName": "ukish_landing_settings",
+  "info": {
+    "singularName": "landing-setting",
+    "pluralName": "landing-settings",
+    "displayName": "Главная страница",
+    "description": "Медиа и настройки главной страницы лендинга"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "productionVideo": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["videos"]
+    },
+    "productionFallbackImage": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    },
+    "productionAlt": {
+      "type": "string",
+      "default": "Производство матрасов UKISH"
+    }
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "kind": "collectionType",
+  "collectionName": "ukish_reviews",
+  "info": {
+    "singularName": "review",
+    "pluralName": "reviews",
+    "displayName": "Отзывы",
+    "description": "Отзывы клиентов для главной страницы"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "city": {
+      "type": "string"
+    },
+    "text": {
+      "type": "text",
+      "required": true
+    },
+    "rating": {
+      "type": "integer",
+      "required": true,
+      "default": 5,
+      "min": 1,
+      "max": 5
+    },
+    "reviewDate": {
+      "type": "date"
+    },
+    "photos": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": ["images"]
+    },
+    "active": {
+      "type": "boolean",
+      "default": true
+    },
+    "sortOrder": {
+      "type": "integer",
+      "default": 100
+    }
+  }
+}

@@ -176,6 +176,54 @@ async function main() {
     ['orderNumber', 'orderStatus', 'customerName', 'phone', 'total'],
   )
 
+  await configureContentType(
+    token,
+    'api::review.review',
+    {
+      name: 'Имя',
+      city: 'Город',
+      text: 'Текст комментария',
+      rating: 'Оценка',
+      reviewDate: 'Дата отзыва',
+      photos: 'Фото клиента',
+      active: 'Активен',
+      sortOrder: 'Порядок',
+    },
+    [
+      [
+        { name: 'name', size: 6 },
+        { name: 'city', size: 6 },
+      ],
+      [
+        { name: 'rating', size: 6 },
+        { name: 'reviewDate', size: 6 },
+      ],
+      [{ name: 'text', size: 12 }],
+      [{ name: 'photos', size: 12 }],
+      [
+        { name: 'active', size: 6 },
+        { name: 'sortOrder', size: 6 },
+      ],
+    ],
+    ['name', 'rating', 'city', 'active'],
+  )
+
+  await configureContentType(
+    token,
+    'api::landing-setting.landing-setting',
+    {
+      productionVideo: 'Видео производства',
+      productionFallbackImage: 'Фото, если видео не загрузилось',
+      productionAlt: 'Описание медиа',
+    },
+    [
+      [{ name: 'productionVideo', size: 12 }],
+      [{ name: 'productionFallbackImage', size: 12 }],
+      [{ name: 'productionAlt', size: 12 }],
+    ],
+    ['productionAlt'],
+  )
+
   console.log('Configured Strapi admin views')
 }
 

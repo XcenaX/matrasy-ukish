@@ -4,8 +4,11 @@ import Link from 'next/link'
 
 import { AnimateIn, StaggerItem, StaggerList } from '@/components/animate-in'
 import { ConsultForm } from '@/components/consult-form'
+import { LandingProductionMedia } from '@/components/landing-production-media'
 import { ProductGrid } from '@/components/product-grid'
+import { ReviewsCarousel } from '@/components/reviews-carousel'
 import { Footer, Header } from '@/components/site-shell'
+import { fallbackLandingSettings, fallbackReviews } from '@/lib/landing-content'
 import { seedProducts } from '@/lib/seed-data'
 
 const KASPI_SHOP_URL = 'https://l.kaspi.kz/shop/3vC4nEY6Qcv7Mta'
@@ -13,7 +16,7 @@ const KASPI_SHOP_URL = 'https://l.kaspi.kz/shop/3vC4nEY6Qcv7Mta'
 const features = [
   { icon: Factory, label: 'Собственное производство' },
   { icon: Gem, label: 'Премиальные материалы' },
-  { icon: ShieldCheck, label: 'Гарантия 24 месяца' },
+  { icon: ShieldCheck, label: 'Гарантия 60 месяцев' },
   { icon: BadgePercent, label: 'Нагрузка до 200 кг' },
   { icon: Truck, label: 'Бесплатная доставка' },
   { icon: BadgePercent, label: 'Рассрочка 0-0-12' },
@@ -22,16 +25,10 @@ const features = [
 const reasons = [
   ['01', 'Собственное производство', 'Фабрика UKISH с собственными складами и автопарком для доставки'],
   ['02', 'Доставка по Казахстану', 'Работаем по всему Казахстану и доставляем заказы до двери'],
-  ['03', 'Гарантия до 24 месяцев', 'Официальная гарантия от производителя'],
+  ['03', 'Гарантия до 60 месяцев', 'Официальная гарантия от производителя'],
   ['04', 'Быстрое изготовление', 'Заказ готов в течение 1-3 дней'],
   ['05', 'Сертифицированные материалы', 'Все материалы проходят строгий контроль качества'],
   ['06', 'Честные цены', 'На 27% ниже рынка благодаря отсутствию посредников'],
-]
-
-const reviews = [
-  ['Айгерим', 'г. Караганда', 'Купили матрас Diamond Prime. Спим уже месяц, спина перестала болеть. Очень качественные материалы, сервис на высшем уровне!'],
-  ['Максат', 'г. Астана', 'Доставили день в день, как и обещали. Матрас Smart оказался идеальной жесткости. Спасибо консультанту за помощь в выборе.'],
-  ['Елена', 'г. Шымкент', 'Заказывали матрас для ребенка из коллекции Kids. Нет никакого запаха, чехол приятный на ощупь. Ребенок спит отлично.'],
 ]
 
 const cities = ['Астана', 'Караганда', 'Усть-Каменогорск']
@@ -45,7 +42,7 @@ const partners = [
   { name: 'Global Construction Development', src: '/assets/partners/global-construction-development.svg', className: 'partner-logo-original h-[82px] w-[174px]' },
   { name: 'Burabay Hotel', src: '/assets/partners/burabay-hotel.svg', className: 'partner-logo-original h-[92px] w-[99px]' },
   { name: 'Saryarka', src: '/assets/partners/saryarka.svg', className: 'partner-logo-original h-[86px] w-[88px]' },
-  { name: 'Amanat Mental Clinic', src: '/assets/partners/amanat-mental-clinic.svg', className: 'partner-logo-original h-[86px] w-[78px]' },
+  { name: 'Amanat Mental Clinic', src: '/assets/partners/amanat-mental-clinic.svg', className: 'partner-logo-original h-[58px] w-[218px]' },
 ]
 
 export default function Home() {
@@ -92,14 +89,73 @@ export default function Home() {
 
         {/* Features bar */}
         <section className="border-b border-slate-200 bg-[#faf8f5] py-14">
-          <StaggerList className="container-wide grid grid-cols-2 gap-6 lg:grid-cols-3 xl:grid-cols-6" gap={0.07}>
+          <div className="container-wide grid grid-cols-2 gap-6 lg:grid-cols-3 xl:grid-cols-6">
             {features.map((feature) => (
-              <StaggerItem key={feature.label} className="flex items-center justify-center gap-3 text-sm text-[#1e2939] sm:gap-4">
+              <div key={feature.label} className="flex items-center justify-center gap-3 text-sm text-[#1e2939] sm:gap-4">
                 <feature.icon className="shrink-0 text-[var(--gold)]" size={30} strokeWidth={1.4} />
                 <span className="max-w-[120px] leading-5 sm:max-w-[130px]">{feature.label}</span>
-              </StaggerItem>
+              </div>
             ))}
-          </StaggerList>
+          </div>
+        </section>
+
+        {/* Production */}
+        <section id="about-company" className="py-24">
+          <div className="container-wide bg-[#f3eee8] p-8 md:p-12 xl:p-16">
+            <div className="grid gap-10 xl:grid-cols-[minmax(0,0.9fr)_minmax(520px,1.1fr)] xl:items-start">
+              <AnimateIn variant="fade-left">
+                <p className="eyebrow">О компании</p>
+                <h2 className="serif mt-8 max-w-3xl text-[clamp(40px,4vw,64px)] leading-tight text-[#111827]">
+                  Ukish Matras - забота о качестве сна с 2018 года
+                </h2>
+                <p className="mt-8 max-w-2xl text-base leading-7 text-slate-600">
+                  С 2018 года создаем ортопедические матрасы в Казахстане. Используем турецкие и международные технологии сна, внедряем современные материалы и развиваем собственное производство.
+                </p>
+                <Link href="/catalog" className="mt-10 inline-flex min-h-12 items-center justify-center bg-[var(--brown)] px-10 py-4 text-[10px] uppercase tracking-[0.2em] text-white shadow-[0_18px_40px_-24px_rgba(42,31,26,0.75)] transition hover:bg-[var(--brown-soft)] active:translate-y-px">
+                  Узнать больше
+                </Link>
+              </AnimateIn>
+
+              <AnimateIn variant="fade-right" className="relative overflow-hidden">
+                <LandingProductionMedia initialSettings={fallbackLandingSettings} />
+              </AnimateIn>
+            </div>
+
+            <AnimateIn className="mt-12 grid gap-10 border-t border-[#dccfbe] pt-10 lg:grid-cols-[minmax(0,1fr)_minmax(360px,0.72fr)]">
+              <div className="grid gap-5 text-base leading-7 text-slate-600 md:grid-cols-2">
+                <p>
+                  Производство находится в городе Астана. Компания также успешно развивается и работает в Караганде и Усть-Каменогорске, предлагая продукцию как для розничных покупателей, так и для оптовых партнёров.
+                </p>
+                <p>
+                  С момента основания мы стремимся создавать продукцию, которая сочетает в себе высокое качество, современные технологии и максимальный комфорт. В производстве используются тщательно подобранные материалы и современные решения, позволяющие обеспечивать надежность, долговечность и высокий уровень комфорта.
+                </p>
+                <p>
+                  Каждое изделие создаётся с вниманием к деталям и проходит контроль качества на всех этапах производства. Мы уделяем особое внимание эстетике, качеству исполнения и современному дизайну, создавая продукцию, соответствующую высоким стандартам индустрии сна.
+                </p>
+                <p>
+                  Мы ценим доверие наших клиентов и продолжаем развиваться, совершенствуя качество продукции и создавая комфорт, который становится частью повседневной жизни.
+                </p>
+              </div>
+
+              <div>
+                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#111827]">Сегодня Ukish Matras — это:</p>
+                <ul className="mt-5 grid gap-3 text-sm leading-6 text-slate-600 sm:grid-cols-2 lg:grid-cols-1">
+                  {[
+                    'собственное производство',
+                    'современные технологии',
+                    'широкий ассортимент продукции',
+                    'работа оптом и в розницу',
+                    'индивидуальный подход к каждому клиенту',
+                  ].map((item) => (
+                    <li key={item} className="flex gap-3">
+                      <span className="mt-2 h-1.5 w-1.5 flex-none rounded-full bg-[var(--gold)]" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </AnimateIn>
+          </div>
         </section>
 
         {/* Collections */}
@@ -136,55 +192,6 @@ export default function Home() {
                 </StaggerItem>
               ))}
             </StaggerList>
-          </div>
-        </section>
-
-        {/* Production */}
-        <section id="about-company" className="py-28">
-          <div className="container-wide grid overflow-hidden bg-[#f3eee8] lg:grid-cols-2">
-            <AnimateIn variant="fade-left" className="p-12 md:p-20">
-              <p className="eyebrow">О компании</p>
-              <h2 className="serif mt-8 max-w-2xl text-5xl leading-tight text-[#111827]">Ukish Matras - забота о качестве сна с 2018 года</h2>
-              <p className="mt-8 max-w-2xl text-base leading-7 text-slate-600">
-                Ukish Matras — современное производство матрасов и товаров для сна, основанное в 2018 году. Название компании дано в честь матери — как символ заботы, уважения и семейных ценностей, которые лежат в основе философии бренда.
-              </p>
-              <p className="mt-5 max-w-2xl text-base leading-7 text-slate-600">
-                Производство находится в городе Астана. Компания также успешно развивается и работает в Караганде и Усть-Каменогорске, предлагая продукцию как для розничных покупателей, так и для оптовых партнёров.
-              </p>
-              <p className="mt-5 max-w-2xl text-base leading-7 text-slate-600">
-                С момента основания мы стремимся создавать продукцию, которая сочетает в себе высокое качество, современные технологии и максимальный комфорт. В производстве используются тщательно подобранные материалы и современные решения, позволяющие обеспечивать надежность, долговечность и высокий уровень комфорта.
-              </p>
-              <p className="mt-5 max-w-2xl text-base leading-7 text-slate-600">
-                Каждое изделие создаётся с вниманием к деталям и проходит контроль качества на всех этапах производства. Мы уделяем особое внимание эстетике, качеству исполнения и современному дизайну, создавая продукцию, соответствующую высоким стандартам индустрии сна.
-              </p>
-              <div className="mt-8 max-w-2xl">
-                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#111827]">Сегодня Ukish Matras — это:</p>
-                <ul className="mt-5 grid gap-3 text-sm leading-6 text-slate-600 sm:grid-cols-2">
-                  {[
-                    'собственное производство',
-                    'современные технологии',
-                    'широкий ассортимент продукции',
-                    'работа оптом и в розницу',
-                    'индивидуальный подход к каждому клиенту',
-                  ].map((item) => (
-                    <li key={item} className="flex gap-3">
-                      <span className="mt-2 h-1.5 w-1.5 flex-none rounded-full bg-[var(--gold)]" />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <p className="mt-8 max-w-2xl text-base leading-7 text-slate-600">
-                Мы ценим доверие наших клиентов и продолжаем развиваться, совершенствуя качество продукции и создавая комфорт, который становится частью повседневной жизни.
-              </p>
-              <Link href="/catalog" className="mt-12 inline-flex min-h-12 items-center justify-center bg-[var(--brown)] px-10 py-4 text-[10px] uppercase tracking-[0.2em] text-white shadow-[0_18px_40px_-24px_rgba(42,31,26,0.75)] transition hover:bg-[var(--brown-soft)] active:translate-y-px">
-                Узнать больше
-              </Link>
-            </AnimateIn>
-            <AnimateIn variant="fade-right" className="relative min-h-[420px]">
-              <Image src="/assets/production.jpg" alt="Производство матрасов UKISH" fill className="object-cover grayscale" />
-              <div className="absolute inset-0 bg-black/20" />
-            </AnimateIn>
           </div>
         </section>
 
@@ -232,21 +239,7 @@ export default function Home() {
               <p className="eyebrow text-slate-400">Отзывы</p>
               <h2 className="section-title mt-6 text-[#111827]">Что говорят наши клиенты</h2>
             </AnimateIn>
-            <StaggerList className="mt-16 grid gap-8 lg:grid-cols-3" gap={0.12}>
-              {reviews.map(([name, city, text]) => (
-                <StaggerItem key={name} className="bg-white p-10">
-                  <p className="text-[var(--gold)]">★★★★★</p>
-                  <p className="mt-8 min-h-[86px] text-base leading-7 text-slate-600">{text}</p>
-                  <div className="mt-8 flex items-center gap-5">
-                    <span className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 text-slate-500">{name[0]}</span>
-                    <div>
-                      <h3 className="font-semibold">{name}</h3>
-                      <p className="mt-1 text-xs uppercase tracking-[0.18em] text-slate-400">{city}</p>
-                    </div>
-                  </div>
-                </StaggerItem>
-              ))}
-            </StaggerList>
+            <ReviewsCarousel initialReviews={fallbackReviews} />
             <StaggerList className="mt-14 grid rounded-lg bg-white py-9 text-center md:grid-cols-3" gap={0.12}>
               {[
                 ['12 лет', 'На рынке Казахстана'],
