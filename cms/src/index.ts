@@ -70,10 +70,24 @@ async function configureProductListView(strapi: any) {
 async function setContentManagerConfig(strapi: any, uid: string, value: any) {
   const key = `configuration_content_types::${uid}`
   const storeNames = ['content-manager', 'content_manager']
+  const systemMetadatas = {
+    documentId: { edit: {}, list: { label: 'documentId', searchable: true, sortable: true } },
+    createdAt: { edit: {}, list: { label: 'Создано', searchable: true, sortable: true } },
+    updatedAt: { edit: {}, list: { label: 'Обновлено', searchable: true, sortable: true } },
+    createdBy: { edit: {}, list: { label: 'Создал', searchable: false, sortable: false } },
+    updatedBy: { edit: {}, list: { label: 'Обновил', searchable: false, sortable: false } },
+  }
+  const nextValue = {
+    ...value,
+    metadatas: {
+      ...systemMetadatas,
+      ...value.metadatas,
+    },
+  }
 
   for (const name of storeNames) {
     const store = strapi.store({ type: 'plugin', name })
-    await store.set({ key, value })
+    await store.set({ key, value: nextValue })
   }
 }
 
