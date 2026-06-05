@@ -92,6 +92,11 @@ async function setContentManagerConfig(strapi: any, uid: string, value: any) {
 }
 
 async function configureReviewAdminView(strapi: any) {
+  const store = strapi.store({ type: 'plugin', name: 'content_manager' })
+  const existing = await store.get({ key: 'configuration_content_types::api::review.review' })
+
+  if (existing?.layouts?.list?.length && existing?.metadatas?.createdAt?.list) return
+
   await setContentManagerConfig(strapi, 'api::review.review', {
     uid: 'api::review.review',
     settings: {
@@ -138,6 +143,11 @@ async function configureReviewAdminView(strapi: any) {
 }
 
 async function configureLandingSettingsAdminView(strapi: any) {
+  const store = strapi.store({ type: 'plugin', name: 'content_manager' })
+  const existing = await store.get({ key: 'configuration_content_types::api::landing-setting.landing-setting' })
+
+  if (existing?.layouts?.edit?.length && existing?.metadatas?.createdAt?.list) return
+
   await setContentManagerConfig(strapi, 'api::landing-setting.landing-setting', {
     uid: 'api::landing-setting.landing-setting',
     settings: {
