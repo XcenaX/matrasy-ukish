@@ -1,5 +1,29 @@
 import type { Schema, Struct } from '@strapi/strapi';
 
+export interface ContactAddressLine extends Struct.ComponentSchema {
+  collectionName: 'components_contact_addresses';
+  info: {
+    description: '\u0413\u043E\u0440\u043E\u0434 \u0438 \u0430\u0434\u0440\u0435\u0441 \u0442\u043E\u0447\u043A\u0438. \u041A\u0430\u0436\u0434\u0443\u044E \u0441\u0442\u0440\u043E\u043A\u0443 \u0430\u0434\u0440\u0435\u0441\u0430 \u043F\u0438\u0448\u0438\u0442\u0435 \u0441 \u043D\u043E\u0432\u043E\u0439 \u0441\u0442\u0440\u043E\u043A\u0438';
+    displayName: '\u0410\u0434\u0440\u0435\u0441';
+  };
+  attributes: {
+    city: Schema.Attribute.String & Schema.Attribute.Required;
+    lines: Schema.Attribute.Text & Schema.Attribute.Required;
+  };
+}
+
+export interface ContactCityPhone extends Struct.ComponentSchema {
+  collectionName: 'components_contact_city_phones';
+  info: {
+    description: '\u0413\u043E\u0440\u043E\u0434 \u0438 \u0442\u0435\u043B\u0435\u0444\u043E\u043D \u0440\u043E\u0437\u043D\u0438\u0447\u043D\u043E\u0439 \u0442\u043E\u0447\u043A\u0438';
+    displayName: '\u0422\u0435\u043B\u0435\u0444\u043E\u043D \u043F\u043E \u0433\u043E\u0440\u043E\u0434\u0443';
+  };
+  attributes: {
+    city: Schema.Attribute.String & Schema.Attribute.Required;
+    phone: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
 export interface OrderItem extends Struct.ComponentSchema {
   collectionName: 'components_order_items';
   info: {
@@ -75,6 +99,8 @@ export interface ProductSize extends Struct.ComponentSchema {
 declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
+      'contact.address-line': ContactAddressLine;
+      'contact.city-phone': ContactCityPhone;
       'order.item': OrderItem;
       'product.benefit': ProductBenefit;
       'product.gallery-image': ProductGalleryImage;

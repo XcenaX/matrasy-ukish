@@ -23,9 +23,9 @@ const features = [
 ]
 
 const reasons = [
-  ['01', 'Собственное производство', 'Фабрика UKISH с собственными складами и автопарком для доставки'],
+  ['01', 'Собственная фабрика', 'Фабрика UKISH с собственными складами и автопарком для доставки'],
   ['02', 'Доставка по Казахстану', 'Работаем по всему Казахстану и доставляем заказы до двери'],
-  ['03', 'Гарантия до 60 месяцев', 'Официальная гарантия от производителя'],
+  ['03', 'Гарантия 60 месяцев', 'Официальная гарантия от производителя'],
   ['04', 'Быстрое изготовление', 'Заказ готов в течение 1-3 дней'],
   ['05', 'Сертифицированные материалы', 'Все материалы проходят строгий контроль качества'],
   ['06', 'Честные цены', 'На 27% ниже рынка благодаря отсутствию посредников'],
@@ -65,7 +65,7 @@ export default function Home() {
                 напрямую от производителя
               </h1>
               <p className="mx-auto mt-9 max-w-md text-base leading-7 text-slate-200 md:mx-0">
-                Собственное производство премиальных ортопедических матрасов в Астане. Работаем по всему Казахстану, принимаем заказы в Астане, Караганде и Усть-Каменогорске.
+                Собственное производство ортопедических матрасов в Астане. Работаем по всему Казахстану, принимаем заказы в Астане, Караганде и Усть-Каменогорске.
               </p>
               <div className="mx-auto mt-12 flex w-full max-w-sm flex-col gap-4 sm:max-w-none sm:flex-row sm:flex-wrap md:mx-0">
                 <Link href="/catalog" className="btn-primary w-full sm:w-auto">
@@ -109,7 +109,7 @@ export default function Home() {
                   Ukish Matras - забота о качестве сна с 2018 года
                 </h2>
                 <p className="mt-8 max-w-2xl text-base leading-7 text-slate-600">
-                  С 2018 года создаем ортопедические матрасы в Казахстане. Используем турецкие и международные технологии сна, внедряем современные материалы и развиваем собственное производство.
+                  Ukish Matras — современное производство матрасов и товаров для сна, основанное в 2018 году. Название компании дано в честь матери — как символ заботы, уважения и семейных ценностей, которые лежат в основе философии бренда.
                 </p>
                 <Link href="/catalog" className="mt-10 inline-flex min-h-12 items-center justify-center bg-[var(--brown)] px-10 py-4 text-[10px] uppercase tracking-[0.2em] text-white shadow-[0_18px_40px_-24px_rgba(42,31,26,0.75)] transition hover:bg-[var(--brown-soft)] active:translate-y-px">
                   Узнать больше
@@ -182,6 +182,9 @@ export default function Home() {
             <AnimateIn>
               <p className="eyebrow">Почему выбирают нас</p>
               <h2 className="section-title mt-7">6 причин купить матрас у нас</h2>
+              <p className="mt-7 max-w-3xl text-base leading-7 text-slate-300">
+                С 2018 года производим ортопедические матрасы в Казахстане по турецким и международным технологиям сна, внедряем современные материалы и развиваем собственное производство.
+              </p>
             </AnimateIn>
             <StaggerList className="mt-16 grid gap-4 md:grid-cols-2 xl:grid-cols-4" gap={0.08}>
               {reasons.map(([number, title, text]) => (
@@ -242,7 +245,7 @@ export default function Home() {
             <ReviewsCarousel initialReviews={fallbackReviews} />
             <StaggerList className="mt-14 grid rounded-lg bg-white py-9 text-center md:grid-cols-3" gap={0.12}>
               {[
-                ['12 лет', 'На рынке Казахстана'],
+                ['8 лет', 'На рынке Казахстана'],
                 ['1000+', 'Довольных клиентов'],
                 ['98%', 'Рекомендуют нас'],
               ].map(([value, label]) => (
@@ -259,7 +262,6 @@ export default function Home() {
         <section id="partners" className="border-b-[8px] border-[#e8e8e8] bg-[var(--brown)] py-28 text-white">
           <div className="container-wide">
             <AnimateIn className="text-center">
-              <p className="eyebrow">Партнёры</p>
               <h2 className="serif mt-7 text-5xl leading-tight">Наши партнёры</h2>
               <p className="mx-auto mt-6 max-w-xl text-sm leading-6 text-white/45">
                 Мы работаем с ведущими брендами и компаниями, которым доверяем и которые доверяют нам

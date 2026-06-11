@@ -1,0 +1,17 @@
+{
+  "collectionName": "components_contact_city_phones",
+  "info": {
+    "displayName": "Телефон по городу",
+    "description": "Город и телефон розничной точки"
+  },
+  "attributes": {
+    "city": {
+      "type": "string",
+      "required": true
+    },
+    "phone": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

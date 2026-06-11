@@ -5,7 +5,7 @@
     "singularName": "landing-setting",
     "pluralName": "landing-settings",
     "displayName": "Главная страница",
-    "description": "Медиа и настройки главной страницы лендинга"
+    "description": "Медиа, контакты и настройки главной страницы лендинга"
   },
   "options": {
     "draftAndPublish": false
@@ -24,6 +24,48 @@
     "productionAlt": {
       "type": "string",
       "default": "Производство матрасов UKISH"
+    },
+    "mainPhone": {
+      "type": "string",
+      "default": "+7 705 388 6887"
+    },
+    "wholesalePhone": {
+      "type": "string",
+      "default": "+7 776 531 2506"
+    },
+    "email": {
+      "type": "string",
+      "default": "Astana.matrasy@gmail.com"
+    },
+    "workHours": {
+      "type": "string",
+      "default": "Ежедневно с 10:00 до 20:00"
+    },
+    "whatsappPhone": {
+      "type": "string",
+      "default": "77053886887"
+    },
+    "instagramUrl": {
+      "type": "string",
+      "default": "https://www.instagram.com/ukish_mattress"
+    },
+    "tiktokUrl": {
+      "type": "string",
+      "default": "https://www.tiktok.com/@ukish_mattress1"
+    },
+    "kaspiUrl": {
+      "type": "string",
+      "default": "https://l.kaspi.kz/shop/3vC4nEY6Qcv7Mta"
+    },
+    "cityPhones": {
+      "type": "component",
+      "repeatable": true,
+      "component": "contact.city-phone"
+    },
+    "addresses": {
+      "type": "component",
+      "repeatable": true,
+      "component": "contact.address-line"
     }
   }
 }

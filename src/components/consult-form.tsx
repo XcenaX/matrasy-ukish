@@ -2,7 +2,8 @@
 
 import { useState } from 'react'
 
-const WHATSAPP_PHONE = '77053886887'
+import { whatsappDigits } from '@/lib/contacts'
+import { useSiteContacts } from '@/lib/use-site-contacts'
 
 function WhatsAppIcon() {
   return (
@@ -14,12 +15,13 @@ function WhatsAppIcon() {
 
 export function ConsultForm() {
   const [name, setName] = useState('')
+  const contacts = useSiteContacts()
 
   const isFilled = name.trim().length > 0
 
   function buildUrl() {
     const text = encodeURIComponent(`Здравствуйте! Меня зовут ${name.trim()}. Хочу получить консультацию по подбору матраса.`)
-    return `https://wa.me/${WHATSAPP_PHONE}?text=${text}`
+    return `https://wa.me/${whatsappDigits(contacts.whatsappPhone)}?text=${text}`
   }
 
   return (

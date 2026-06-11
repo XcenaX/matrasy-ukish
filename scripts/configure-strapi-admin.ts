@@ -7,6 +7,7 @@ type ContentManagerConfig = {
   metadatas: Record<string, { edit: Record<string, unknown>; list: Record<string, unknown> }>
   layouts: {
     edit: { name: string; size: number }[][]
+    editRelations?: unknown[]
     list: string[]
   }
 }
@@ -86,6 +87,41 @@ async function configureContentType(
   config.layouts.list = listLayout
 
   await request(`/content-manager/content-types/${uid}/configuration`, token, {
+    method: 'PUT',
+    body: JSON.stringify({
+      settings: config.settings,
+      metadatas: config.metadatas,
+      layouts: config.layouts,
+    }),
+  })
+}
+
+async function configureComponent(
+  token: string,
+  uid: string,
+  labels: Record<string, string>,
+  editLayout: { name: string; size: number }[][],
+  listLayout: string[],
+) {
+  const response = (await request(`/content-manager/components/${uid}/configuration`, token)) as {
+    data: { component: ContentManagerConfig }
+  }
+  const config = response.data.component
+
+  for (const [field, label] of Object.entries(labels)) {
+    if (!config.metadatas[field]) continue
+    config.metadatas[field].edit.label = label
+    config.metadatas[field].list.label = label
+  }
+
+  for (const metadata of Object.values(config.metadatas)) {
+    delete metadata.list.mainField
+  }
+
+  config.layouts.edit = editLayout
+  config.layouts.list = listLayout
+
+  await request(`/content-manager/components/${uid}/configuration`, token, {
     method: 'PUT',
     body: JSON.stringify({
       settings: config.settings,
@@ -215,13 +251,129 @@ async function main() {
       productionVideo: 'Видео производства',
       productionFallbackImage: 'Фото, если видео не загрузилось',
       productionAlt: 'Описание медиа',
+      mainPhone: 'Основной телефон',
+      wholesalePhone: 'Оптовый телефон',
+      email: 'Email',
+      workHours: 'Часы работы',
+      whatsappPhone: 'WhatsApp (цифры)',
+      instagramUrl: 'Instagram (ссылка)',
+      tiktokUrl: 'TikTok (ссылка)',
+      kaspiUrl: 'Kaspi магазин (ссылка)',
+      cityPhones: 'Телефоны по городам',
+      addresses: 'Адреса точек',
     },
     [
       [{ name: 'productionVideo', size: 12 }],
       [{ name: 'productionFallbackImage', size: 12 }],
       [{ name: 'productionAlt', size: 12 }],
+      [
+        { name: 'mainPhone', size: 6 },
+        { name: 'wholesalePhone', size: 6 },
+      ],
+      [
+        { name: 'email', size: 6 },
+        { name: 'workHours', size: 6 },
+      ],
+      [{ name: 'whatsappPhone', size: 6 }],
+      [
+        { name: 'instagramUrl', size: 6 },
+        { name: 'tiktokUrl', size: 6 },
+      ],
+      [{ name: 'kaspiUrl', size: 12 }],
+      [{ name: 'cityPhones', size: 12 }],
+      [{ name: 'addresses', size: 12 }],
     ],
     ['productionAlt'],
+  )
+
+  await configureComponent(
+    token,
+    'product.size',
+    {
+      size: 'Размер',
+      price: 'Цена',
+    },
+    [[
+      { name: 'size', size: 6 },
+      { name: 'price', size: 6 },
+    ]],
+    ['size', 'price'],
+  )
+
+  await configureComponent(
+    token,
+    'product.gallery-image',
+    {
+      image: 'Фото',
+    },
+    [[{ name: 'image', size: 12 }]],
+    ['image'],
+  )
+
+  await configureComponent(
+    token,
+    'product.benefit',
+    {
+      title: 'Заголовок',
+      text: 'Текст',
+    },
+    [
+      [{ name: 'title', size: 12 }],
+      [{ name: 'text', size: 12 }],
+    ],
+    ['title'],
+  )
+
+  await configureComponent(
+    token,
+    'contact.city-phone',
+    {
+      city: 'Город',
+      phone: 'Телефон',
+    },
+    [[
+      { name: 'city', size: 6 },
+      { name: 'phone', size: 6 },
+    ]],
+    ['city', 'phone'],
+  )
+
+  await configureComponent(
+    token,
+    'contact.address-line',
+    {
+      city: 'Город',
+      lines: 'Адреса',
+    },
+    [
+      [{ name: 'city', size: 12 }],
+      [{ name: 'lines', size: 12 }],
+    ],
+    ['city'],
+  )
+
+  await configureComponent(
+    token,
+    'order.item',
+    {
+      productId: 'ID товара',
+      title: 'Товар',
+      size: 'Размер',
+      quantity: 'Количество',
+      price: 'Цена',
+    },
+    [
+      [{ name: 'title', size: 12 }],
+      [
+        { name: 'size', size: 6 },
+        { name: 'quantity', size: 6 },
+      ],
+      [
+        { name: 'price', size: 6 },
+        { name: 'productId', size: 6 },
+      ],
+    ],
+    ['title', 'size', 'quantity', 'price'],
   )
 
   console.log('Configured Strapi admin views')

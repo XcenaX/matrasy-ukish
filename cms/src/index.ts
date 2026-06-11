@@ -1,3 +1,19 @@
+type AdminFieldConfig = {
+  edit?: Record<string, unknown>
+  list?: Record<string, unknown>
+}
+
+type AdminConfig = {
+  uid: string
+  settings: Record<string, unknown>
+  metadatas: Record<string, AdminFieldConfig>
+  layouts: {
+    list: string[]
+    editRelations: unknown[]
+    edit: { name: string; size: number }[][]
+  }
+}
+
 async function ensurePublicPermission(strapi: any, action: string) {
   const role = await strapi.db.query('plugin::users-permissions.role').findOne({
     where: { type: 'public' },
@@ -22,61 +38,25 @@ async function ensurePublicPermission(strapi: any, action: string) {
   })
 }
 
-async function configureProductListView(strapi: any) {
-  const storeKey = 'configuration_content_types::api::product.product'
-  const store = strapi.store({ type: 'plugin', name: 'content-manager' })
-  const existing = await store.get({ key: storeKey })
-
-  // Не перезаписываем если уже настроено вручную
-  if (existing?.layouts?.list?.length) return
-
-  await store.set({
-    key: storeKey,
-    value: {
-      uid: 'api::product.product',
-      settings: {
-        bulkable: true,
-        filterable: true,
-        searchable: true,
-        pageSize: 25,
-        mainField: 'title',
-        defaultSortBy: 'title',
-        defaultSortOrder: 'ASC',
-      },
-      metadatas: {
-        id:         { edit: {}, list: { label: 'ID', searchable: true, sortable: true } },
-        title:      { edit: { label: 'Название', visible: true, editable: true }, list: { label: 'Название', searchable: true, sortable: true } },
-        slug:       { edit: { label: 'Слаг', visible: true, editable: true },     list: { label: 'Слаг', searchable: true, sortable: true } },
-        collection: { edit: { label: 'Коллекция', visible: true, editable: true }, list: { label: 'Коллекция', searchable: false, sortable: true } },
-        price:      { edit: { label: 'Цена', visible: true, editable: true },      list: { label: 'Цена', searchable: false, sortable: true } },
-        active:     { edit: { label: 'Активен', visible: true, editable: true },   list: { label: 'Активен', searchable: false, sortable: true } },
-      },
-      layouts: {
-        list: ['title', 'collection', 'price', 'active'],
-        editRelations: [],
-        edit: [
-          [{ name: 'title', size: 6 }, { name: 'slug', size: 6 }],
-          [{ name: 'collection', size: 4 }, { name: 'hardness', size: 4 }, { name: 'active', size: 4 }],
-          [{ name: 'price', size: 4 }, { name: 'oldPrice', size: 4 }, { name: 'sortOrder', size: 4 }],
-          [{ name: 'shortDescription', size: 12 }],
-          [{ name: 'description', size: 12 }],
-          [{ name: 'image', size: 12 }],
-        ],
-      },
-    },
-  })
+const systemMetadatas = {
+  documentId: { edit: {}, list: { label: 'documentId', searchable: true, sortable: true } },
+  createdAt: { edit: {}, list: { label: 'Создано', searchable: true, sortable: true } },
+  updatedAt: { edit: {}, list: { label: 'Обновлено', searchable: true, sortable: true } },
+  createdBy: { edit: {}, list: { label: 'Создал', searchable: false, sortable: false } },
+  updatedBy: { edit: {}, list: { label: 'Обновил', searchable: false, sortable: false } },
 }
 
-async function setContentManagerConfig(strapi: any, uid: string, value: any) {
-  const key = `configuration_content_types::${uid}`
-  const storeNames = ['content-manager', 'content_manager']
-  const systemMetadatas = {
-    documentId: { edit: {}, list: { label: 'documentId', searchable: true, sortable: true } },
-    createdAt: { edit: {}, list: { label: 'Создано', searchable: true, sortable: true } },
-    updatedAt: { edit: {}, list: { label: 'Обновлено', searchable: true, sortable: true } },
-    createdBy: { edit: {}, list: { label: 'Создал', searchable: false, sortable: false } },
-    updatedBy: { edit: {}, list: { label: 'Обновил', searchable: false, sortable: false } },
+function field(label: string, options: { searchable?: boolean; sortable?: boolean; visible?: boolean; editable?: boolean } = {}) {
+  const { searchable = true, sortable = true, visible = true, editable = true } = options
+
+  return {
+    edit: { label, visible, editable },
+    list: { label, searchable, sortable },
   }
+}
+
+async function setAdminConfig(strapi: any, keyPrefix: 'configuration_content_types' | 'configuration_components', value: AdminConfig) {
+  const key = `${keyPrefix}::${value.uid}`
   const nextValue = {
     ...value,
     metadatas: {
@@ -85,44 +65,165 @@ async function setContentManagerConfig(strapi: any, uid: string, value: any) {
     },
   }
 
-  for (const name of storeNames) {
+  for (const name of ['content-manager', 'content_manager']) {
     const store = strapi.store({ type: 'plugin', name })
     await store.set({ key, value: nextValue })
   }
 }
 
-async function configureReviewAdminView(strapi: any) {
-  const store = strapi.store({ type: 'plugin', name: 'content_manager' })
-  const existing = await store.get({ key: 'configuration_content_types::api::review.review' })
-
-  if (existing?.layouts?.list?.length && existing?.metadatas?.createdAt?.list) return
-
-  await setContentManagerConfig(strapi, 'api::review.review', {
-    uid: 'api::review.review',
-    settings: {
-      bulkable: true,
-      filterable: true,
-      searchable: true,
-      pageSize: 25,
-      mainField: 'name',
-      defaultSortBy: 'sortOrder',
-      defaultSortOrder: 'ASC',
-    },
-    metadatas: {
-      id: { edit: {}, list: { label: 'ID', searchable: true, sortable: true } },
-      name: { edit: { label: 'Имя', visible: true, editable: true }, list: { label: 'Имя', searchable: true, sortable: true } },
-      city: { edit: { label: 'Город', visible: true, editable: true }, list: { label: 'Город', searchable: true, sortable: true } },
-      text: { edit: { label: 'Текст комментария', visible: true, editable: true }, list: { label: 'Текст комментария', searchable: true, sortable: false } },
-      rating: { edit: { label: 'Оценка', visible: true, editable: true }, list: { label: 'Оценка', searchable: false, sortable: true } },
-      reviewDate: { edit: { label: 'Дата отзыва', visible: true, editable: true }, list: { label: 'Дата отзыва', searchable: false, sortable: true } },
-      photos: { edit: { label: 'Фото клиента', visible: true, editable: true }, list: { label: 'Фото клиента', searchable: false, sortable: false } },
-      active: { edit: { label: 'Активен', visible: true, editable: true }, list: { label: 'Активен', searchable: false, sortable: true } },
-      sortOrder: { edit: { label: 'Порядок', visible: true, editable: true }, list: { label: 'Порядок', searchable: false, sortable: true } },
-    },
+function contentTypeConfig(
+  uid: string,
+  settings: AdminConfig['settings'],
+  metadatas: AdminConfig['metadatas'],
+  edit: AdminConfig['layouts']['edit'],
+  list: string[],
+): AdminConfig {
+  return {
+    uid,
+    settings,
+    metadatas,
     layouts: {
-      list: ['name', 'rating', 'city', 'active'],
+      list,
       editRelations: [],
-      edit: [
+      edit,
+    },
+  }
+}
+
+async function configureProductAdminView(strapi: any) {
+  await setAdminConfig(
+    strapi,
+    'configuration_content_types',
+    contentTypeConfig(
+      'api::product.product',
+      {
+        bulkable: true,
+        filterable: true,
+        searchable: true,
+        pageSize: 25,
+        mainField: 'title',
+        defaultSortBy: 'title',
+        defaultSortOrder: 'ASC',
+      },
+      {
+        id: { edit: {}, list: { label: 'ID', searchable: true, sortable: true } },
+        title: field('Название'),
+        slug: field('Слаг', { visible: false, editable: false }),
+        collection: field('Коллекция', { searchable: false }),
+        hardness: field('Жесткость', { searchable: false }),
+        shortDescription: field('Краткое описание', { sortable: false }),
+        description: field('Описание', { sortable: false }),
+        price: field('Цена', { searchable: false }),
+        oldPrice: field('Старая цена', { searchable: false }),
+        image: field('Главное фото', { searchable: false, sortable: false }),
+        gallery: field('Галерея', { searchable: false, sortable: false }),
+        sizes: field('Размеры и цены', { searchable: false, sortable: false }),
+        benefits: field('Преимущества', { searchable: false, sortable: false }),
+        active: field('Активен', { searchable: false }),
+        sortOrder: field('Порядок', { searchable: false }),
+      },
+      [
+        [{ name: 'title', size: 12 }],
+        [
+          { name: 'collection', size: 6 },
+          { name: 'hardness', size: 6 },
+        ],
+        [
+          { name: 'price', size: 4 },
+          { name: 'oldPrice', size: 4 },
+          { name: 'sortOrder', size: 4 },
+        ],
+        [{ name: 'image', size: 12 }],
+        [{ name: 'shortDescription', size: 12 }],
+        [{ name: 'description', size: 12 }],
+        [{ name: 'gallery', size: 12 }],
+        [{ name: 'sizes', size: 12 }],
+        [{ name: 'benefits', size: 12 }],
+        [{ name: 'active', size: 4 }],
+      ],
+      ['title', 'collection', 'price', 'active'],
+    ),
+  )
+}
+
+async function configureOrderAdminView(strapi: any) {
+  await setAdminConfig(
+    strapi,
+    'configuration_content_types',
+    contentTypeConfig(
+      'api::order.order',
+      {
+        bulkable: true,
+        filterable: true,
+        searchable: true,
+        pageSize: 25,
+        mainField: 'orderNumber',
+        defaultSortBy: 'createdAt',
+        defaultSortOrder: 'DESC',
+      },
+      {
+        id: { edit: {}, list: { label: 'ID', searchable: true, sortable: true } },
+        orderNumber: field('Номер заказа'),
+        orderStatus: field('Статус', { searchable: false }),
+        customerName: field('Имя клиента'),
+        phone: field('Телефон'),
+        city: field('Город'),
+        address: field('Адрес', { sortable: false }),
+        paymentMethod: field('Способ оплаты'),
+        comment: field('Комментарий', { sortable: false }),
+        items: field('Состав заказа', { searchable: false, sortable: false }),
+        total: field('Итого', { searchable: false }),
+      },
+      [
+        [
+          { name: 'orderNumber', size: 6 },
+          { name: 'orderStatus', size: 6 },
+        ],
+        [
+          { name: 'customerName', size: 6 },
+          { name: 'phone', size: 6 },
+        ],
+        [
+          { name: 'city', size: 6 },
+          { name: 'total', size: 6 },
+        ],
+        [{ name: 'address', size: 12 }],
+        [{ name: 'items', size: 12 }],
+        [{ name: 'paymentMethod', size: 12 }],
+        [{ name: 'comment', size: 12 }],
+      ],
+      ['orderNumber', 'orderStatus', 'customerName', 'phone', 'total'],
+    ),
+  )
+}
+
+async function configureReviewAdminView(strapi: any) {
+  await setAdminConfig(
+    strapi,
+    'configuration_content_types',
+    contentTypeConfig(
+      'api::review.review',
+      {
+        bulkable: true,
+        filterable: true,
+        searchable: true,
+        pageSize: 25,
+        mainField: 'name',
+        defaultSortBy: 'sortOrder',
+        defaultSortOrder: 'ASC',
+      },
+      {
+        id: { edit: {}, list: { label: 'ID', searchable: true, sortable: true } },
+        name: field('Имя'),
+        city: field('Город'),
+        text: field('Текст комментария', { sortable: false }),
+        rating: field('Оценка', { searchable: false }),
+        reviewDate: field('Дата отзыва', { searchable: false }),
+        photos: field('Фото клиента', { searchable: false, sortable: false }),
+        active: field('Активен', { searchable: false }),
+        sortOrder: field('Порядок', { searchable: false }),
+      },
+      [
         [
           { name: 'name', size: 6 },
           { name: 'city', size: 6 },
@@ -138,43 +239,169 @@ async function configureReviewAdminView(strapi: any) {
           { name: 'sortOrder', size: 6 },
         ],
       ],
-    },
-  })
+      ['name', 'rating', 'city', 'active'],
+    ),
+  )
 }
 
 async function configureLandingSettingsAdminView(strapi: any) {
-  const store = strapi.store({ type: 'plugin', name: 'content_manager' })
-  const existing = await store.get({ key: 'configuration_content_types::api::landing-setting.landing-setting' })
-
-  if (existing?.layouts?.edit?.length && existing?.metadatas?.createdAt?.list) return
-
-  await setContentManagerConfig(strapi, 'api::landing-setting.landing-setting', {
-    uid: 'api::landing-setting.landing-setting',
-    settings: {
-      bulkable: false,
-      filterable: true,
-      searchable: true,
-      pageSize: 25,
-      mainField: 'productionAlt',
-      defaultSortBy: 'id',
-      defaultSortOrder: 'ASC',
-    },
-    metadatas: {
-      id: { edit: {}, list: { label: 'ID', searchable: true, sortable: true } },
-      productionVideo: { edit: { label: 'Видео производства', visible: true, editable: true }, list: { label: 'Видео производства', searchable: false, sortable: false } },
-      productionFallbackImage: { edit: { label: 'Фото, если видео не загрузилось', visible: true, editable: true }, list: { label: 'Фото, если видео не загрузилось', searchable: false, sortable: false } },
-      productionAlt: { edit: { label: 'Описание медиа', visible: true, editable: true }, list: { label: 'Описание медиа', searchable: true, sortable: true } },
-    },
-    layouts: {
-      list: ['productionAlt'],
-      editRelations: [],
-      edit: [
+  await setAdminConfig(
+    strapi,
+    'configuration_content_types',
+    contentTypeConfig(
+      'api::landing-setting.landing-setting',
+      {
+        bulkable: false,
+        filterable: true,
+        searchable: true,
+        pageSize: 25,
+        mainField: 'productionAlt',
+        defaultSortBy: 'id',
+        defaultSortOrder: 'ASC',
+      },
+      {
+        id: { edit: {}, list: { label: 'ID', searchable: true, sortable: true } },
+        productionVideo: field('Видео производства', { searchable: false, sortable: false }),
+        productionFallbackImage: field('Фото, если видео не загрузилось', { searchable: false, sortable: false }),
+        productionAlt: field('Описание медиа'),
+        mainPhone: field('Основной телефон'),
+        wholesalePhone: field('Оптовый телефон'),
+        email: field('Email'),
+        workHours: field('Часы работы'),
+        whatsappPhone: field('WhatsApp (цифры)'),
+        instagramUrl: field('Instagram (ссылка)', { searchable: false, sortable: false }),
+        tiktokUrl: field('TikTok (ссылка)', { searchable: false, sortable: false }),
+        kaspiUrl: field('Kaspi магазин (ссылка)', { searchable: false, sortable: false }),
+        cityPhones: field('Телефоны по городам', { searchable: false, sortable: false }),
+        addresses: field('Адреса точек', { searchable: false, sortable: false }),
+      },
+      [
         [{ name: 'productionVideo', size: 12 }],
         [{ name: 'productionFallbackImage', size: 12 }],
         [{ name: 'productionAlt', size: 12 }],
+        [
+          { name: 'mainPhone', size: 6 },
+          { name: 'wholesalePhone', size: 6 },
+        ],
+        [
+          { name: 'email', size: 6 },
+          { name: 'workHours', size: 6 },
+        ],
+        [{ name: 'whatsappPhone', size: 6 }],
+        [
+          { name: 'instagramUrl', size: 6 },
+          { name: 'tiktokUrl', size: 6 },
+        ],
+        [{ name: 'kaspiUrl', size: 12 }],
+        [{ name: 'cityPhones', size: 12 }],
+        [{ name: 'addresses', size: 12 }],
       ],
-    },
-  })
+      ['productionAlt', 'mainPhone'],
+    ),
+  )
+}
+
+async function configureComponentAdminViews(strapi: any) {
+  const components: AdminConfig[] = [
+    contentTypeConfig(
+      'product.size',
+      { mainField: 'size' },
+      {
+        id: { edit: {}, list: { label: 'ID', searchable: true, sortable: true } },
+        size: field('Размер'),
+        price: field('Цена', { searchable: false }),
+      },
+      [
+        [
+          { name: 'size', size: 6 },
+          { name: 'price', size: 6 },
+        ],
+      ],
+      ['size', 'price'],
+    ),
+    contentTypeConfig(
+      'product.gallery-image',
+      { mainField: 'image' },
+      {
+        id: { edit: {}, list: { label: 'ID', searchable: true, sortable: true } },
+        image: field('Фото', { searchable: false, sortable: false }),
+      },
+      [[{ name: 'image', size: 12 }]],
+      ['image'],
+    ),
+    contentTypeConfig(
+      'product.benefit',
+      { mainField: 'title' },
+      {
+        id: { edit: {}, list: { label: 'ID', searchable: true, sortable: true } },
+        title: field('Заголовок'),
+        text: field('Текст', { sortable: false }),
+      },
+      [
+        [{ name: 'title', size: 12 }],
+        [{ name: 'text', size: 12 }],
+      ],
+      ['title'],
+    ),
+    contentTypeConfig(
+      'contact.city-phone',
+      { mainField: 'city' },
+      {
+        id: { edit: {}, list: { label: 'ID', searchable: true, sortable: true } },
+        city: field('Город'),
+        phone: field('Телефон'),
+      },
+      [
+        [
+          { name: 'city', size: 6 },
+          { name: 'phone', size: 6 },
+        ],
+      ],
+      ['city', 'phone'],
+    ),
+    contentTypeConfig(
+      'contact.address-line',
+      { mainField: 'city' },
+      {
+        id: { edit: {}, list: { label: 'ID', searchable: true, sortable: true } },
+        city: field('Город'),
+        lines: field('Адреса', { sortable: false }),
+      },
+      [
+        [{ name: 'city', size: 12 }],
+        [{ name: 'lines', size: 12 }],
+      ],
+      ['city'],
+    ),
+    contentTypeConfig(
+      'order.item',
+      { mainField: 'title' },
+      {
+        id: { edit: {}, list: { label: 'ID', searchable: true, sortable: true } },
+        productId: field('ID товара'),
+        title: field('Товар'),
+        size: field('Размер'),
+        quantity: field('Количество', { searchable: false }),
+        price: field('Цена', { searchable: false }),
+      },
+      [
+        [{ name: 'title', size: 12 }],
+        [
+          { name: 'size', size: 6 },
+          { name: 'quantity', size: 6 },
+        ],
+        [
+          { name: 'price', size: 6 },
+          { name: 'productId', size: 6 },
+        ],
+      ],
+      ['title', 'size', 'quantity', 'price'],
+    ),
+  ]
+
+  for (const component of components) {
+    await setAdminConfig(strapi, 'configuration_components', component)
+  }
 }
 
 export default {
@@ -194,8 +421,10 @@ export default {
       await ensurePublicPermission(strapi, action)
     }
 
-    await configureProductListView(strapi)
+    await configureProductAdminView(strapi)
+    await configureOrderAdminView(strapi)
     await configureReviewAdminView(strapi)
     await configureLandingSettingsAdminView(strapi)
+    await configureComponentAdminViews(strapi)
   },
 }

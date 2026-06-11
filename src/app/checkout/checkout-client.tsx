@@ -5,10 +5,10 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
+import { whatsappDigits } from '@/lib/contacts'
 import { useCartStore } from '@/lib/cart-store'
 import { formatPrice } from '@/lib/seed-data'
-
-const WHATSAPP_PHONE = '77053886887'
+import { useSiteContacts } from '@/lib/use-site-contacts'
 
 const PAYMENT_LABELS: Record<string, string> = {
   card_on_delivery: 'Картой при получении',
@@ -21,6 +21,7 @@ export function CheckoutClient() {
   const [city, setCity] = useState('')
   const [address, setAddress] = useState('')
   const [paymentMethod, setPaymentMethod] = useState('card_on_delivery')
+  const contacts = useSiteContacts()
   const items = useCartStore((state) => state.items)
   const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0)
 
@@ -41,7 +42,7 @@ export function CheckoutClient() {
     lines.push('')
     lines.push(`*Итого: ${formatPrice(total)}*`)
     const text = encodeURIComponent(lines.join('\n'))
-    return `https://wa.me/${WHATSAPP_PHONE}?text=${text}`
+    return `https://wa.me/${whatsappDigits(contacts.whatsappPhone)}?text=${text}`
   }
 
   if (!mounted || items.length === 0) {

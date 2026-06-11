@@ -444,7 +444,7 @@ export interface ApiLandingSettingLandingSetting
   extends Struct.SingleTypeSchema {
   collectionName: 'ukish_landing_settings';
   info: {
-    description: '\u041C\u0435\u0434\u0438\u0430 \u0438 \u043D\u0430\u0441\u0442\u0440\u043E\u0439\u043A\u0438 \u0433\u043B\u0430\u0432\u043D\u043E\u0439 \u0441\u0442\u0440\u0430\u043D\u0438\u0446\u044B \u043B\u0435\u043D\u0434\u0438\u043D\u0433\u0430';
+    description: '\u041C\u0435\u0434\u0438\u0430, \u043A\u043E\u043D\u0442\u0430\u043A\u0442\u044B \u0438 \u043D\u0430\u0441\u0442\u0440\u043E\u0439\u043A\u0438 \u0433\u043B\u0430\u0432\u043D\u043E\u0439 \u0441\u0442\u0440\u0430\u043D\u0438\u0446\u044B \u043B\u0435\u043D\u0434\u0438\u043D\u0433\u0430';
     displayName: '\u0413\u043B\u0430\u0432\u043D\u0430\u044F \u0441\u0442\u0440\u0430\u043D\u0438\u0446\u0430';
     pluralName: 'landing-settings';
     singularName: 'landing-setting';
@@ -453,23 +453,41 @@ export interface ApiLandingSettingLandingSetting
     draftAndPublish: false;
   };
   attributes: {
+    addresses: Schema.Attribute.Component<'contact.address-line', true>;
+    cityPhones: Schema.Attribute.Component<'contact.city-phone', true>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    email: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'Astana.matrasy@gmail.com'>;
+    instagramUrl: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'https://www.instagram.com/ukish_mattress'>;
+    kaspiUrl: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'https://l.kaspi.kz/shop/3vC4nEY6Qcv7Mta'>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'api::landing-setting.landing-setting'
     > &
       Schema.Attribute.Private;
+    mainPhone: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'+7 705 388 6887'>;
     productionAlt: Schema.Attribute.String &
       Schema.Attribute.DefaultTo<'\u041F\u0440\u043E\u0438\u0437\u0432\u043E\u0434\u0441\u0442\u0432\u043E \u043C\u0430\u0442\u0440\u0430\u0441\u043E\u0432 UKISH'>;
     productionFallbackImage: Schema.Attribute.Media<'images'>;
     productionVideo: Schema.Attribute.Media<'videos'>;
     publishedAt: Schema.Attribute.DateTime;
+    tiktokUrl: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'https://www.tiktok.com/@ukish_mattress1'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    whatsappPhone: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'77053886887'>;
+    wholesalePhone: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'+7 776 531 2506'>;
+    workHours: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'\u0415\u0436\u0435\u0434\u043D\u0435\u0432\u043D\u043E \u0441 10:00 \u0434\u043E 20:00'>;
   };
 }
 

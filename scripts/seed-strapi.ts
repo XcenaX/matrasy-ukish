@@ -255,11 +255,39 @@ async function createReview(token: string, review: (typeof seedReviews)[number],
   })
 }
 
+async function seedLandingContacts(token: string) {
+  // Частичное обновление single type: задаём только контактные поля,
+  // не трогая загруженное медиа производства (Strapi update — partial).
+  await request('/content-manager/single-types/api::landing-setting.landing-setting', token, {
+    method: 'PUT',
+    body: JSON.stringify({
+      mainPhone: '+7 705 388 6887',
+      wholesalePhone: '+7 776 531 2506',
+      email: 'Astana.matrasy@gmail.com',
+      workHours: 'Ежедневно с 10:00 до 20:00',
+      whatsappPhone: '77053886887',
+      instagramUrl: 'https://www.instagram.com/ukish_mattress',
+      tiktokUrl: 'https://www.tiktok.com/@ukish_mattress1',
+      kaspiUrl: 'https://l.kaspi.kz/shop/3vC4nEY6Qcv7Mta',
+      cityPhones: [
+        { city: 'Астана', phone: '+7 705 388 6887' },
+        { city: 'Караганда', phone: '+7 705 433 4001' },
+        { city: 'Усть-Каменогорск', phone: '+7 708 527 9247' },
+      ],
+      addresses: [
+        { city: 'г. Астана', lines: 'ул. Ж.Омарова, 150' },
+        { city: 'г. Караганда', lines: 'ул. Республики, 9\nТЦ «Kazmart», 1 этаж' },
+      ],
+    }),
+  })
+}
+
 async function main() {
   const token = await getAdminToken()
 
   await deleteExistingProducts(token)
   await deleteExistingReviews(token)
+  await seedLandingContacts(token)
 
   for (const [index, product] of seedProducts.entries()) {
     await createProduct(token, product, (index + 1) * 10)
@@ -269,7 +297,7 @@ async function main() {
     await createReview(token, review, (index + 1) * 10)
   }
 
-  console.log(`Seeded ${seedProducts.length} products and ${seedReviews.length} reviews into Strapi`)
+  console.log(`Seeded ${seedProducts.length} products, ${seedReviews.length} reviews and landing contacts into Strapi`)
 }
 
 main().catch((error) => {

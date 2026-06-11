@@ -1,0 +1,17 @@
+{
+  "collectionName": "components_contact_addresses",
+  "info": {
+    "displayName": "Адрес",
+    "description": "Город и адрес точки. Каждую строку адреса пишите с новой строки"
+  },
+  "attributes": {
+    "city": {
+      "type": "string",
+      "required": true
+    },
+    "lines": {
+      "type": "text",
+      "required": true
+    }
+  }
+}
