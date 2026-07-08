@@ -106,10 +106,10 @@ export default function Home() {
               <AnimateIn variant="fade-left">
                 <p className="eyebrow">О компании</p>
                 <h2 className="serif mt-8 max-w-3xl text-[clamp(40px,4vw,64px)] leading-tight text-[#111827]">
-                  Ukish Matras - забота о качестве сна с 2018 года
+                  Ukish Mattress - забота о качестве сна с 2018 года
                 </h2>
                 <p className="mt-8 max-w-2xl text-base leading-7 text-slate-600">
-                  Ukish Matras — современное производство матрасов и товаров для сна, основанное в 2018 году. Название компании дано в честь матери — как символ заботы, уважения и семейных ценностей, которые лежат в основе философии бренда.
+                  Ukish Mattress — современное производство матрасов и товаров для сна, основанное в 2018 году. Название компании дано в честь матери — как символ заботы, уважения и семейных ценностей, которые лежат в основе философии бренда.
                 </p>
                 <Link href="/catalog" className="mt-10 inline-flex min-h-12 items-center justify-center bg-[var(--brown)] px-10 py-4 text-[10px] uppercase tracking-[0.2em] text-white shadow-[0_18px_40px_-24px_rgba(42,31,26,0.75)] transition hover:bg-[var(--brown-soft)] active:translate-y-px">
                   Узнать больше
@@ -138,7 +138,7 @@ export default function Home() {
               </div>
 
               <div>
-                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#111827]">Сегодня Ukish Matras — это:</p>
+                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#111827]">Сегодня Ukish Mattress — это:</p>
                 <ul className="mt-5 grid gap-3 text-sm leading-6 text-slate-600 sm:grid-cols-2 lg:grid-cols-1">
                   {[
                     'собственное производство',

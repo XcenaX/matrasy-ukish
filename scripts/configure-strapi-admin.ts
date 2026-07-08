@@ -102,6 +102,7 @@ async function configureComponent(
   labels: Record<string, string>,
   editLayout: { name: string; size: number }[][],
   listLayout: string[],
+  mainField?: string,
 ) {
   const response = (await request(`/content-manager/components/${uid}/configuration`, token)) as {
     data: { component: ContentManagerConfig }
@@ -116,6 +117,10 @@ async function configureComponent(
 
   for (const metadata of Object.values(config.metadatas)) {
     delete metadata.list.mainField
+  }
+
+  if (mainField) {
+    config.settings.mainField = mainField
   }
 
   config.layouts.edit = editLayout
@@ -147,8 +152,10 @@ async function main() {
       price: 'Цена',
       oldPrice: 'Старая цена',
       image: 'Главное фото',
-      gallery: 'Галерея',
+      gallery: 'Дополнительные фото',
+      reviewVideo: 'Видео-обзор',
       sizes: 'Размеры',
+      details: 'Детали',
       benefits: 'Преимущества',
       active: 'Активен',
       sortOrder: 'Порядок',
@@ -168,7 +175,9 @@ async function main() {
       [{ name: 'shortDescription', size: 12 }],
       [{ name: 'description', size: 12 }],
       [{ name: 'gallery', size: 12 }],
+      [{ name: 'reviewVideo', size: 12 }],
       [{ name: 'sizes', size: 12 }],
+      [{ name: 'details', size: 12 }],
       [{ name: 'benefits', size: 12 }],
       [{ name: 'active', size: 4 }],
     ],
@@ -308,6 +317,7 @@ async function main() {
     },
     [[{ name: 'image', size: 12 }]],
     ['image'],
+    'id',
   )
 
   await configureComponent(
@@ -322,6 +332,21 @@ async function main() {
       [{ name: 'text', size: 12 }],
     ],
     ['title'],
+  )
+
+  await configureComponent(
+    token,
+    'product.detail',
+    {
+      label: 'Название',
+      value: 'Значение',
+    },
+    [[
+      { name: 'label', size: 6 },
+      { name: 'value', size: 6 },
+    ]],
+    ['label', 'value'],
+    'label',
   )
 
   await configureComponent(

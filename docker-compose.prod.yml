@@ -1,10 +1,17 @@
 name: ukish-prod
 
+x-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+
 services:
   postgres:
     image: postgres:16-alpine
     container_name: ukish-postgres
     restart: unless-stopped
+    logging: *default-logging
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
@@ -24,6 +31,7 @@ services:
       target: prod
     container_name: ukish-strapi
     restart: unless-stopped
+    logging: *default-logging
     depends_on:
       postgres:
         condition: service_healthy
@@ -53,6 +61,7 @@ services:
     image: nginx:alpine
     container_name: ukish-nginx
     restart: unless-stopped
+    logging: *default-logging
     depends_on:
       - strapi
     ports:
@@ -66,6 +75,7 @@ services:
   certbot:
     image: certbot/certbot
     container_name: ukish-certbot
+    logging: *default-logging
     volumes:
       - letsencrypt:/etc/letsencrypt
       - ./docker/nginx/certbot:/var/www/certbot

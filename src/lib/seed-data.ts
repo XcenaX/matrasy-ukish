@@ -12,7 +12,9 @@ export type StoreProduct = {
   oldPrice?: number
   image: string
   gallery: string[]
+  reviewVideo?: string
   sizes: { size: string; price: number }[]
+  details?: { label: string; value: string }[]
   benefits: { title: string; text: string }[]
   active?: boolean
   sortOrder?: number

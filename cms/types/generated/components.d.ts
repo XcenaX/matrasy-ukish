@@ -66,6 +66,18 @@ export interface ProductBenefit extends Struct.ComponentSchema {
   };
 }
 
+export interface ProductDetail extends Struct.ComponentSchema {
+  collectionName: 'components_product_details';
+  info: {
+    description: '\u0425\u0430\u0440\u0430\u043A\u0442\u0435\u0440\u0438\u0441\u0442\u0438\u043A\u0430 \u0442\u043E\u0432\u0430\u0440\u0430: \u043D\u0430\u0437\u0432\u0430\u043D\u0438\u0435 \u0438 \u0437\u043D\u0430\u0447\u0435\u043D\u0438\u0435';
+    displayName: '\u0414\u0435\u0442\u0430\u043B\u044C \u0442\u043E\u0432\u0430\u0440\u0430';
+  };
+  attributes: {
+    label: Schema.Attribute.String & Schema.Attribute.Required;
+    value: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
 export interface ProductGalleryImage extends Struct.ComponentSchema {
   collectionName: 'components_product_gallery_images';
   info: {
@@ -103,6 +115,7 @@ declare module '@strapi/strapi' {
       'contact.city-phone': ContactCityPhone;
       'order.item': OrderItem;
       'product.benefit': ProductBenefit;
+      'product.detail': ProductDetail;
       'product.gallery-image': ProductGalleryImage;
       'product.size': ProductSize;
     }

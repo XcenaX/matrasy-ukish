@@ -574,6 +574,7 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     description: Schema.Attribute.Text & Schema.Attribute.Required;
+    details: Schema.Attribute.Component<'product.detail', true>;
     gallery: Schema.Attribute.Component<'product.gallery-image', true>;
     hardness: Schema.Attribute.Enumeration<
       [
@@ -607,6 +608,7 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
         number
       >;
     publishedAt: Schema.Attribute.DateTime;
+    reviewVideo: Schema.Attribute.Media<'videos'>;
     shortDescription: Schema.Attribute.Text & Schema.Attribute.Required;
     sizes: Schema.Attribute.Component<'product.size', true>;
     slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;

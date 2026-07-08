@@ -2,13 +2,17 @@
 
 import { ShoppingBag } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
 
 import { useCartStore } from '@/lib/cart-store'
 import { formatPrice, type StoreProduct } from '@/lib/seed-data'
 
-export function AddToCart({ product }: { product: StoreProduct }) {
-  const [selectedSize, setSelectedSize] = useState(product.sizes[3]?.size || product.sizes[0]?.size || '')
+type AddToCartProps = {
+  product: StoreProduct
+  selectedSize: string
+  onSelectedSizeChange: (size: string) => void
+}
+
+export function AddToCart({ product, selectedSize, onSelectedSizeChange }: AddToCartProps) {
   const addItem = useCartStore((state) => state.addItem)
   const router = useRouter()
   const selected = product.sizes.find((size) => size.size === selectedSize) || product.sizes[0]
@@ -26,7 +30,7 @@ export function AddToCart({ product }: { product: StoreProduct }) {
           <button
             key={item.size}
             type="button"
-            onClick={() => setSelectedSize(item.size)}
+            onClick={() => onSelectedSizeChange(item.size)}
             className={`h-12 border text-sm ${
               selectedSize === item.size
                 ? 'border-[var(--gold)] bg-[#f7f0e8] text-[var(--gold)]'

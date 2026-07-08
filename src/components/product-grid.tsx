@@ -96,22 +96,26 @@ export function ProductGrid({ initialProducts, limit }: { initialProducts: Store
   }, [limit])
 
   useEffect(() => {
-    if (limit) return
+    if (!limit) {
+      updateCatalogUrl(collection, hardness, sort)
+    }
 
-    updateCatalogUrl(collection, hardness, sort)
     const controller = new AbortController()
+    const nextCollection = limit ? 'all' : collection
+    const nextHardness = limit ? 'all' : hardness
+    const nextSort = limit ? 'popular' : sort
 
     setIsLoading(true)
 
     fetchProductsFromStrapi()
       .then((items) => {
         if (!controller.signal.aborted) {
-          setProducts(filterAndSortProducts(items, collection, hardness, sort))
+          setProducts(filterAndSortProducts(items, nextCollection, nextHardness, nextSort))
         }
       })
       .catch(() => {
         if (!controller.signal.aborted) {
-          setProducts(filterAndSortProducts(initialProducts, collection, hardness, sort))
+          setProducts(filterAndSortProducts(initialProducts, nextCollection, nextHardness, nextSort))
         }
       })
       .finally(() => setIsLoading(false))

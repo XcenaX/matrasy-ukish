@@ -116,8 +116,10 @@ async function configureProductAdminView(strapi: any) {
         price: field('Цена', { searchable: false }),
         oldPrice: field('Старая цена', { searchable: false }),
         image: field('Главное фото', { searchable: false, sortable: false }),
-        gallery: field('Галерея', { searchable: false, sortable: false }),
+        gallery: field('Дополнительные фото', { searchable: false, sortable: false }),
+        reviewVideo: field('Видео-обзор', { searchable: false, sortable: false }),
         sizes: field('Размеры и цены', { searchable: false, sortable: false }),
+        details: field('Детали', { searchable: false, sortable: false }),
         benefits: field('Преимущества', { searchable: false, sortable: false }),
         active: field('Активен', { searchable: false }),
         sortOrder: field('Порядок', { searchable: false }),
@@ -137,7 +139,9 @@ async function configureProductAdminView(strapi: any) {
         [{ name: 'shortDescription', size: 12 }],
         [{ name: 'description', size: 12 }],
         [{ name: 'gallery', size: 12 }],
+        [{ name: 'reviewVideo', size: 12 }],
         [{ name: 'sizes', size: 12 }],
+        [{ name: 'details', size: 12 }],
         [{ name: 'benefits', size: 12 }],
         [{ name: 'active', size: 4 }],
       ],
@@ -321,7 +325,7 @@ async function configureComponentAdminViews(strapi: any) {
     ),
     contentTypeConfig(
       'product.gallery-image',
-      { mainField: 'image' },
+      { mainField: 'id' },
       {
         id: { edit: {}, list: { label: 'ID', searchable: true, sortable: true } },
         image: field('Фото', { searchable: false, sortable: false }),
@@ -342,6 +346,22 @@ async function configureComponentAdminViews(strapi: any) {
         [{ name: 'text', size: 12 }],
       ],
       ['title'],
+    ),
+    contentTypeConfig(
+      'product.detail',
+      { mainField: 'label' },
+      {
+        id: { edit: {}, list: { label: 'ID', searchable: true, sortable: true } },
+        label: field('Название'),
+        value: field('Значение'),
+      },
+      [
+        [
+          { name: 'label', size: 6 },
+          { name: 'value', size: 6 },
+        ],
+      ],
+      ['label', 'value'],
     ),
     contentTypeConfig(
       'contact.city-phone',

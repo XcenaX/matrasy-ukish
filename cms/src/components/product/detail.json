@@ -1,0 +1,17 @@
+{
+  "collectionName": "components_product_details",
+  "info": {
+    "displayName": "Деталь товара",
+    "description": "Характеристика товара: название и значение"
+  },
+  "attributes": {
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "value": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

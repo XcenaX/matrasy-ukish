@@ -26,7 +26,9 @@ type StrapiProduct = {
   oldPrice?: number | null
   image?: StrapiMediaLike
   gallery?: { image?: StrapiMediaLike }[] | null
+  reviewVideo?: StrapiMediaLike
   sizes?: { size?: string; price?: number }[] | null
+  details?: { label?: string; value?: string }[] | null
   benefits?: { title?: string; text?: string }[] | null
   active?: boolean | null
   sortOrder?: number | null
@@ -59,6 +61,17 @@ function resolveMediaUrl(media: StrapiMediaLike): string {
   if (media.data) return resolveMediaUrl(media.data)
   if (media.attributes) return resolveMediaUrl(media.attributes)
   if (!media.url) return '/assets/diamond-prime.jpg'
+  if (media.url.startsWith('/')) return `${getStrapiUrl()}${media.url}`
+
+  return media.url
+}
+
+function resolveOptionalMediaUrl(media: StrapiMediaLike): string | undefined {
+  if (!media) return undefined
+  if (typeof media === 'string') return media
+  if (media.data) return resolveOptionalMediaUrl(media.data)
+  if (media.attributes) return resolveOptionalMediaUrl(media.attributes)
+  if (!media.url) return undefined
   if (media.url.startsWith('/')) return `${getStrapiUrl()}${media.url}`
 
   return media.url
@@ -102,6 +115,7 @@ function normalizeProduct(rawProduct: StrapiProduct): StoreProduct | null {
   const gallery = product.gallery
     ?.map((item) => resolveMediaUrl(item.image))
     .filter(Boolean)
+  const reviewVideo = resolveOptionalMediaUrl(product.reviewVideo)
 
   return {
     id: String(product.documentId || product.id || product.slug),
@@ -117,10 +131,15 @@ function normalizeProduct(rawProduct: StrapiProduct): StoreProduct | null {
     oldPrice: product.oldPrice || undefined,
     image: mainImage,
     gallery: gallery?.length ? gallery : [mainImage],
+    reviewVideo,
     sizes:
       product.sizes
         ?.filter((item) => item.size && item.price)
         .map((item) => ({ size: item.size as string, price: item.price as number })) || [],
+    details:
+      product.details
+        ?.filter((item) => item.label && item.value)
+        .map((item) => ({ label: item.label as string, value: item.value as string })) || [],
     benefits:
       product.benefits
         ?.filter((item) => item.title && item.text)
@@ -138,7 +157,9 @@ async function fetchStrapiProducts(): Promise<StoreProduct[] | null> {
   })
   params.set('populate[image]', 'true')
   params.set('populate[gallery][populate][image]', 'true')
+  params.set('populate[reviewVideo]', 'true')
   params.set('populate[sizes]', 'true')
+  params.set('populate[details]', 'true')
   params.set('populate[benefits]', 'true')
 
   try {
@@ -178,7 +199,9 @@ function buildStrapiProductsParams() {
   })
   params.set('populate[image]', 'true')
   params.set('populate[gallery][populate][image]', 'true')
+  params.set('populate[reviewVideo]', 'true')
   params.set('populate[sizes]', 'true')
+  params.set('populate[details]', 'true')
   params.set('populate[benefits]', 'true')
   return params
 }
