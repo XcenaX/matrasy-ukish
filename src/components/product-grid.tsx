@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from 'react'
 
 import { fetchProductsFromStrapi } from '@/lib/products'
-import { type StoreProduct } from '@/lib/seed-data'
+import { getProductDisplayPrice, type StoreProduct } from '@/lib/seed-data'
 
 import { ProductCard } from './product-card'
 
@@ -48,8 +48,8 @@ function filterAndSortProducts(
     .filter((product) => hardness === 'all' || product.hardness === hardness)
 
   result.sort((a, b) => {
-    if (sort === 'price-asc') return a.price - b.price
-    if (sort === 'price-desc') return b.price - a.price
+    if (sort === 'price-asc') return getProductDisplayPrice(a) - getProductDisplayPrice(b)
+    if (sort === 'price-desc') return getProductDisplayPrice(b) - getProductDisplayPrice(a)
 
     return (a.sortOrder ?? 100) - (b.sortOrder ?? 100)
   })

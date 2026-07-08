@@ -149,8 +149,8 @@ async function main() {
       hardness: 'Жесткость',
       shortDescription: 'Краткое описание',
       description: 'Описание',
-      price: 'Цена',
-      oldPrice: 'Старая цена',
+      price: 'Базовая цена (резерв)',
+      oldPrice: 'Старая цена (резерв)',
       image: 'Главное фото',
       gallery: 'Дополнительные фото',
       reviewVideo: 'Видео-обзор',
@@ -166,11 +166,7 @@ async function main() {
         { name: 'collection', size: 6 },
         { name: 'hardness', size: 6 },
       ],
-      [
-        { name: 'price', size: 4 },
-        { name: 'oldPrice', size: 4 },
-        { name: 'sortOrder', size: 4 },
-      ],
+      [{ name: 'sortOrder', size: 4 }],
       [{ name: 'image', size: 12 }],
       [{ name: 'shortDescription', size: 12 }],
       [{ name: 'description', size: 12 }],
@@ -181,8 +177,8 @@ async function main() {
       [{ name: 'benefits', size: 12 }],
       [{ name: 'active', size: 4 }],
     ],
-    ['title', 'collection', 'price', 'active'],
-    ['slug'],
+    ['title', 'collection', 'active'],
+    ['slug', 'price', 'oldPrice'],
   )
 
   await configureContentType(
@@ -300,13 +296,15 @@ async function main() {
     'product.size',
     {
       size: 'Размер',
-      price: 'Цена',
+      price: 'Цена до скидки',
+      discountPercent: 'Скидка %',
     },
     [[
-      { name: 'size', size: 6 },
-      { name: 'price', size: 6 },
+      { name: 'size', size: 4 },
+      { name: 'price', size: 4 },
+      { name: 'discountPercent', size: 4 },
     ]],
-    ['size', 'price'],
+    ['size', 'price', 'discountPercent'],
   )
 
   await configureComponent(

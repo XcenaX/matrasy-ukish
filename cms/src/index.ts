@@ -113,8 +113,8 @@ async function configureProductAdminView(strapi: any) {
         hardness: field('Жесткость', { searchable: false }),
         shortDescription: field('Краткое описание', { sortable: false }),
         description: field('Описание', { sortable: false }),
-        price: field('Цена', { searchable: false }),
-        oldPrice: field('Старая цена', { searchable: false }),
+        price: field('Базовая цена (резерв)', { searchable: false, visible: false }),
+        oldPrice: field('Старая цена (резерв)', { searchable: false, visible: false }),
         image: field('Главное фото', { searchable: false, sortable: false }),
         gallery: field('Дополнительные фото', { searchable: false, sortable: false }),
         reviewVideo: field('Видео-обзор', { searchable: false, sortable: false }),
@@ -130,11 +130,7 @@ async function configureProductAdminView(strapi: any) {
           { name: 'collection', size: 6 },
           { name: 'hardness', size: 6 },
         ],
-        [
-          { name: 'price', size: 4 },
-          { name: 'oldPrice', size: 4 },
-          { name: 'sortOrder', size: 4 },
-        ],
+        [{ name: 'sortOrder', size: 4 }],
         [{ name: 'image', size: 12 }],
         [{ name: 'shortDescription', size: 12 }],
         [{ name: 'description', size: 12 }],
@@ -145,7 +141,7 @@ async function configureProductAdminView(strapi: any) {
         [{ name: 'benefits', size: 12 }],
         [{ name: 'active', size: 4 }],
       ],
-      ['title', 'collection', 'price', 'active'],
+      ['title', 'collection', 'active'],
     ),
   )
 }
@@ -313,15 +309,17 @@ async function configureComponentAdminViews(strapi: any) {
       {
         id: { edit: {}, list: { label: 'ID', searchable: true, sortable: true } },
         size: field('Размер'),
-        price: field('Цена', { searchable: false }),
+        price: field('Цена до скидки', { searchable: false }),
+        discountPercent: field('Скидка %', { searchable: false }),
       },
       [
         [
-          { name: 'size', size: 6 },
-          { name: 'price', size: 6 },
+          { name: 'size', size: 4 },
+          { name: 'price', size: 4 },
+          { name: 'discountPercent', size: 4 },
         ],
       ],
-      ['size', 'price'],
+      ['size', 'price', 'discountPercent'],
     ),
     contentTypeConfig(
       'product.gallery-image',

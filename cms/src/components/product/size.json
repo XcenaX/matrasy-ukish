@@ -13,6 +13,12 @@
       "type": "integer",
       "required": true,
       "min": 0
+    },
+    "discountPercent": {
+      "type": "integer",
+      "min": 0,
+      "max": 99,
+      "default": 0
     }
   }
 }

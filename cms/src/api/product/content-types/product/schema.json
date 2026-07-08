@@ -41,7 +41,6 @@
     },
     "price": {
       "type": "integer",
-      "required": true,
       "min": 0
     },
     "oldPrice": {

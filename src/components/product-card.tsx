@@ -2,7 +2,7 @@ import { ArrowRight } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 
-import { formatPrice, type StoreProduct } from '@/lib/seed-data'
+import { formatPrice, getProductDisplayPrice, type StoreProduct } from '@/lib/seed-data'
 
 export function ProductCard({ product }: { product: StoreProduct }) {
   const image = product.image || '/assets/diamond-prime.jpg'
@@ -23,7 +23,7 @@ export function ProductCard({ product }: { product: StoreProduct }) {
         <h3 className="serif mt-4 text-[26px] leading-tight text-[#111827]">{product.title}</h3>
         <p className="mt-3 min-h-[44px] text-sm leading-6 text-slate-500">{product.shortDescription}</p>
         <div className="mt-8 flex items-center justify-between border-t border-slate-100 pt-5">
-          <span className="text-sm font-semibold text-[#111827]">от {formatPrice(product.price)}</span>
+          <span className="text-sm font-semibold text-[#111827]">от {formatPrice(getProductDisplayPrice(product))}</span>
           <ArrowRight className="text-slate-400 transition group-hover:translate-x-1 group-hover:text-[var(--gold)]" size={18} />
         </div>
       </div>

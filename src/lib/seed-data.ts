@@ -13,11 +13,17 @@ export type StoreProduct = {
   image: string
   gallery: string[]
   reviewVideo?: string
-  sizes: { size: string; price: number }[]
+  sizes: ProductSize[]
   details?: { label: string; value: string }[]
   benefits: { title: string; text: string }[]
   active?: boolean
   sortOrder?: number
+}
+
+export type ProductSize = {
+  size: string
+  price: number
+  discountPercent?: number
 }
 
 export const collectionLabels: Record<StoreProduct['collection'], string> = {
@@ -206,4 +212,20 @@ export const seedProducts: StoreProduct[] = [
 
 export function formatPrice(price: number) {
   return new Intl.NumberFormat('ru-KZ').format(price) + ' ₸'
+}
+
+export function getDiscountedPrice(size: ProductSize) {
+  const discountPercent = Math.min(Math.max(size.discountPercent || 0, 0), 99)
+  if (!discountPercent) return size.price
+
+  return Math.round(size.price * (1 - discountPercent / 100))
+}
+
+export function getComparePrice(size: ProductSize) {
+  return getDiscountedPrice(size) < size.price ? size.price : undefined
+}
+
+export function getProductDisplayPrice(product: StoreProduct) {
+  const prices = product.sizes.map(getDiscountedPrice).filter((price) => price > 0)
+  return prices.length ? Math.min(...prices) : product.price
 }

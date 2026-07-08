@@ -4,7 +4,7 @@ import { ShoppingBag } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
 import { useCartStore } from '@/lib/cart-store'
-import { formatPrice, type StoreProduct } from '@/lib/seed-data'
+import { formatPrice, getDiscountedPrice, type StoreProduct } from '@/lib/seed-data'
 
 type AddToCartProps = {
   product: StoreProduct
@@ -16,6 +16,7 @@ export function AddToCart({ product, selectedSize, onSelectedSizeChange }: AddTo
   const addItem = useCartStore((state) => state.addItem)
   const router = useRouter()
   const selected = product.sizes.find((size) => size.size === selectedSize) || product.sizes[0]
+  const selectedPrice = selected ? getDiscountedPrice(selected) : product.price
 
   return (
     <div>
@@ -52,7 +53,7 @@ export function AddToCart({ product, selectedSize, onSelectedSizeChange }: AddTo
             collectionLabel: product.collectionLabel,
             image: product.image,
             size: selected?.size || selectedSize,
-            price: selected?.price || product.price,
+            price: selectedPrice,
           })
           router.push('/cart/')
         }}
@@ -60,7 +61,7 @@ export function AddToCart({ product, selectedSize, onSelectedSizeChange }: AddTo
         <ShoppingBag size={16} />
         В корзину
       </button>
-      {selected ? <p className="mt-3 text-center text-xs text-slate-400">Цена выбранного размера: {formatPrice(selected.price)}</p> : null}
+      {selected ? <p className="mt-3 text-center text-xs text-slate-400">Цена выбранного размера: {formatPrice(selectedPrice)}</p> : null}
     </div>
   )
 }

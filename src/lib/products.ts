@@ -27,7 +27,7 @@ type StrapiProduct = {
   image?: StrapiMediaLike
   gallery?: { image?: StrapiMediaLike }[] | null
   reviewVideo?: StrapiMediaLike
-  sizes?: { size?: string; price?: number }[] | null
+  sizes?: { size?: string; price?: number; discountPercent?: number | null }[] | null
   details?: { label?: string; value?: string }[] | null
   benefits?: { title?: string; text?: string }[] | null
   active?: boolean | null
@@ -106,8 +106,17 @@ function normalizeProduct(rawProduct: StrapiProduct): StoreProduct | null {
 
   const collection = product.collection ? collectionMap[product.collection] : undefined
   const hardness = product.hardness ? hardnessMap[product.hardness] : undefined
+  const sizes =
+    product.sizes
+      ?.filter((item) => item.size && item.price)
+      .map((item) => ({
+        size: item.size as string,
+        price: item.price as number,
+        discountPercent: item.discountPercent || undefined,
+      })) || []
+  const fallbackPrice = product.price || sizes[0]?.price
 
-  if (!product.slug || !product.title || !collection || !product.price) {
+  if (!product.slug || !product.title || !collection || !fallbackPrice) {
     return null
   }
 
@@ -127,15 +136,12 @@ function normalizeProduct(rawProduct: StrapiProduct): StoreProduct | null {
     hardnessLabel: hardness ? hardnessLabels[hardness] : undefined,
     shortDescription: product.shortDescription || '',
     description: product.description || product.shortDescription || '',
-    price: product.price,
+    price: fallbackPrice,
     oldPrice: product.oldPrice || undefined,
     image: mainImage,
     gallery: gallery?.length ? gallery : [mainImage],
     reviewVideo,
-    sizes:
-      product.sizes
-        ?.filter((item) => item.size && item.price)
-        .map((item) => ({ size: item.size as string, price: item.price as number })) || [],
+    sizes,
     details:
       product.details
         ?.filter((item) => item.label && item.value)

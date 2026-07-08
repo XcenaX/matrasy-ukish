@@ -600,7 +600,6 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
         number
       >;
     price: Schema.Attribute.Integer &
-      Schema.Attribute.Required &
       Schema.Attribute.SetMinMax<
         {
           min: 0;

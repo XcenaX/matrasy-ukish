@@ -9,7 +9,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { AddToCart } from '@/components/add-to-cart'
 import { Footer, Header } from '@/components/site-shell'
 import { fetchProductFromStrapi } from '@/lib/products'
-import { formatPrice, type StoreProduct } from '@/lib/seed-data'
+import { formatPrice, getComparePrice, getDiscountedPrice, type StoreProduct } from '@/lib/seed-data'
 
 type ProductClientProps = {
   initialSlug?: string
@@ -72,7 +72,8 @@ export function ProductClient({ initialSlug = '', initialProduct = null }: Produ
   }, [galleryImages.length, isLightboxOpen])
 
   const selected = product?.sizes.find((size) => size.size === selectedSize)
-  const displayedPrice = selected?.price ?? product?.price
+  const displayedPrice = selected ? getDiscountedPrice(selected) : product?.price
+  const comparePrice = selected ? getComparePrice(selected) : product?.oldPrice
   const activeImage = galleryImages[activeImageIndex] || product?.image
 
   const showPreviousImage = () => {
@@ -165,7 +166,7 @@ export function ProductClient({ initialSlug = '', initialProduct = null }: Produ
                   <h1 className="serif mt-10 text-[clamp(44px,5vw,64px)] leading-tight text-[#111827]">{product.title}</h1>
                   <div className="mt-8 flex flex-wrap items-end gap-5">
                     {displayedPrice ? <span className="text-4xl font-medium text-[#111827]">{formatPrice(displayedPrice)}</span> : null}
-                    {product.oldPrice ? <span className="text-xl text-slate-400 line-through">{formatPrice(product.oldPrice)}</span> : null}
+                    {comparePrice ? <span className="text-xl text-slate-400 line-through">{formatPrice(comparePrice)}</span> : null}
                   </div>
                   <div className="mt-10">
                     <AddToCart product={product} selectedSize={selectedSize} onSelectedSizeChange={setSelectedSize} />

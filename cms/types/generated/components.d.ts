@@ -96,6 +96,15 @@ export interface ProductSize extends Struct.ComponentSchema {
     displayName: '\u0420\u0430\u0437\u043C\u0435\u0440 \u0438 \u0446\u0435\u043D\u0430';
   };
   attributes: {
+    discountPercent: Schema.Attribute.Integer &
+      Schema.Attribute.SetMinMax<
+        {
+          max: 99;
+          min: 0;
+        },
+        number
+      > &
+      Schema.Attribute.DefaultTo<0>;
     price: Schema.Attribute.Integer &
       Schema.Attribute.Required &
       Schema.Attribute.SetMinMax<
