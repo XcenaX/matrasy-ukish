@@ -105,7 +105,7 @@ export function ProductClient({ initialSlug = '', initialProduct = null }: Produ
               <p className="text-[11px] uppercase tracking-[0.2em] text-slate-400">Главная / Каталог / {product.title}</p>
 
               <section className="mt-10 grid gap-16 lg:grid-cols-[1.1fr_0.75fr]">
-                <div>
+                <div className="lg:sticky lg:top-8 lg:self-start">
                   <button
                     type="button"
                     className="relative block aspect-[1.27] w-full overflow-hidden bg-slate-100"
@@ -167,10 +167,10 @@ export function ProductClient({ initialSlug = '', initialProduct = null }: Produ
                     {displayedPrice ? <span className="text-4xl font-medium text-[#111827]">{formatPrice(displayedPrice)}</span> : null}
                     {product.oldPrice ? <span className="text-xl text-slate-400 line-through">{formatPrice(product.oldPrice)}</span> : null}
                   </div>
-                  <ProductDescription text={product.description} />
                   <div className="mt-10">
                     <AddToCart product={product} selectedSize={selectedSize} onSelectedSizeChange={setSelectedSize} />
                   </div>
+                  <ProductDescription text={product.description} />
                   {product.details?.length ? <ProductDetails details={product.details} /> : null}
                   <div className="mt-10 space-y-6 border-t border-slate-200 pt-10">
                     {(product.benefits.length ? product.benefits : fallbackBenefits).map((benefit, index) => {
