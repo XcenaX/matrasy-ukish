@@ -24,17 +24,28 @@ function DefaultBenefitsPrefill() {
 
   React.useEffect(() => {
     // eslint-disable-next-line no-console
-    console.info('[UKISH prefill] tick', {
-      model,
-      isCreatingEntry,
-      benefitsType: Array.isArray(benefits) ? `array(${benefits.length})` : typeof benefits,
-      addFieldRowType: typeof addFieldRow,
-      applied: applied.current,
-    })
+    console.info(
+      '[UKISH prefill] tick ' +
+        JSON.stringify({
+          model: String(model),
+          isCreatingEntry,
+          benefitsType: Array.isArray(benefits) ? `array(${benefits.length})` : typeof benefits,
+          addFieldRowType: typeof addFieldRow,
+          applied: applied.current,
+        }),
+    )
 
     if (applied.current) return
-    if (model !== PRODUCT_UID || !isCreatingEntry) return
-    if (Array.isArray(benefits) && benefits.length > 0) return
+    if (model !== PRODUCT_UID || !isCreatingEntry) {
+      // eslint-disable-next-line no-console
+      console.info('[UKISH prefill] guard-1 skip (model/create)')
+      return
+    }
+    if (Array.isArray(benefits) && benefits.length > 0) {
+      // eslint-disable-next-line no-console
+      console.info('[UKISH prefill] guard-2 skip (benefits not empty)')
+      return
+    }
 
     applied.current = true
 
