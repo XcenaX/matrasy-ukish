@@ -23,6 +23,15 @@ function DefaultBenefitsPrefill() {
   const applied = React.useRef(false)
 
   React.useEffect(() => {
+    // eslint-disable-next-line no-console
+    console.info('[UKISH prefill] tick', {
+      model,
+      isCreatingEntry,
+      benefitsType: Array.isArray(benefits) ? `array(${benefits.length})` : typeof benefits,
+      addFieldRowType: typeof addFieldRow,
+      applied: applied.current,
+    })
+
     if (applied.current) return
     if (model !== PRODUCT_UID || !isCreatingEntry) return
     if (Array.isArray(benefits) && benefits.length > 0) return
@@ -33,13 +42,17 @@ function DefaultBenefitsPrefill() {
       .then((res: any) => {
         const data = res?.data?.data ?? res?.data
         const defaults = Array.isArray(data?.defaultBenefits) ? data.defaultBenefits : []
+        // eslint-disable-next-line no-console
+        console.info('[UKISH prefill] fetched defaults', defaults.length, 'addFieldRow=', typeof addFieldRow)
 
         defaults.forEach((benefit: { title?: string; text?: string }) => {
           addFieldRow('benefits', { title: benefit?.title ?? '', text: benefit?.text ?? '' })
         })
       })
-      .catch(() => {
+      .catch((err: any) => {
         applied.current = false
+        // eslint-disable-next-line no-console
+        console.error('[UKISH prefill] fetch failed', err?.message || err)
       })
   }, [model, isCreatingEntry, benefits, addFieldRow, get])
 
