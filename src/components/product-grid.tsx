@@ -67,7 +67,7 @@ function updateCatalogUrl(collection: CollectionFilter, hardness: HardnessFilter
 }
 
 export function ProductGrid({ initialProducts, limit }: { initialProducts: StoreProduct[]; limit?: number }) {
-  const [products, setProducts] = useState(initialProducts)
+  const [allProducts, setAllProducts] = useState(initialProducts)
   const [collection, setCollection] = useState<CollectionFilter>('all')
   const [hardness, setHardness] = useState<HardnessFilter>('all')
   const [sort, setSort] = useState<SortOption>('popular')
@@ -99,39 +99,65 @@ export function ProductGrid({ initialProducts, limit }: { initialProducts: Store
     if (!limit) {
       updateCatalogUrl(collection, hardness, sort)
     }
+  }, [collection, hardness, sort, limit])
 
+  useEffect(() => {
     const controller = new AbortController()
-    const nextCollection = limit ? 'all' : collection
-    const nextHardness = limit ? 'all' : hardness
-    const nextSort = limit ? 'popular' : sort
 
     setIsLoading(true)
 
     fetchProductsFromStrapi()
       .then((items) => {
         if (!controller.signal.aborted) {
-          setProducts(filterAndSortProducts(items, nextCollection, nextHardness, nextSort))
+          setAllProducts(items)
         }
       })
       .catch(() => {
         if (!controller.signal.aborted) {
-          setProducts(filterAndSortProducts(initialProducts, nextCollection, nextHardness, nextSort))
+          setAllProducts(initialProducts)
         }
       })
-      .finally(() => setIsLoading(false))
+      .finally(() => {
+        if (!controller.signal.aborted) setIsLoading(false)
+      })
 
     return () => controller.abort()
-  }, [collection, hardness, sort, initialProducts, limit])
+  }, [initialProducts])
 
   useEffect(() => {
     setVisibleCount(limit ?? PAGE_SIZE)
   }, [collection, hardness, sort, limit])
 
-  const filteredProducts = useMemo(() => {
-    if (!limit) return products
+  const activeProducts = useMemo(
+    () => allProducts.filter((product) => product.active !== false),
+    [allProducts],
+  )
 
-    return filterAndSortProducts(products, 'all', 'all', 'popular')
-  }, [products, limit])
+  const availableCollections = useMemo(
+    () => new Set<string>(activeProducts.map((product) => product.collection)),
+    [activeProducts],
+  )
+
+  const availableHardness = useMemo(
+    () => new Set<string>(activeProducts.flatMap((product) => (product.hardness ? [product.hardness] : []))),
+    [activeProducts],
+  )
+
+  const visibleCollectionFilters = useMemo(
+    () => collectionFilters.filter((item) => item.value === 'all' || availableCollections.has(item.value)),
+    [availableCollections],
+  )
+
+  const visibleHardnessFilters = useMemo(
+    () => hardnessFilters.filter((item) => item.value === 'all' || availableHardness.has(item.value)),
+    [availableHardness],
+  )
+
+  const filteredProducts = useMemo(() => {
+    if (limit) return filterAndSortProducts(allProducts, 'all', 'all', 'popular')
+
+    return filterAndSortProducts(allProducts, collection, hardness, sort)
+  }, [allProducts, collection, hardness, sort, limit])
 
   const visibleProducts = useMemo(
     () => filteredProducts.slice(0, limit ?? visibleCount),
@@ -163,17 +189,19 @@ export function ProductGrid({ initialProducts, limit }: { initialProducts: Store
       <aside className="border border-slate-200 bg-white p-6 xl:sticky xl:top-8 xl:self-start">
         <FilterGroup
           title="Коллекция"
-          items={collectionFilters}
+          items={visibleCollectionFilters}
           value={collection}
           onChange={setCollection}
         />
 
-        <FilterGroup
-          title="Жесткость"
-          items={hardnessFilters}
-          value={hardness}
-          onChange={setHardness}
-        />
+        {visibleHardnessFilters.length > 1 ? (
+          <FilterGroup
+            title="Жесткость"
+            items={visibleHardnessFilters}
+            value={hardness}
+            onChange={setHardness}
+          />
+        ) : null}
 
         <button
           className="mt-2 inline-flex min-h-11 items-center border border-slate-200 px-5 text-[11px] uppercase tracking-[0.18em] text-slate-500 hover:border-[var(--gold)] hover:text-[#111827]"

@@ -99,6 +99,24 @@ export default function Home() {
           </div>
         </section>
 
+        {/* Collections */}
+        <section id="collections" className="pb-36 pt-32">
+          <div className="container-wide">
+            <AnimateIn className="mb-16 flex items-end justify-between gap-8">
+              <div>
+                <p className="eyebrow text-slate-400">Коллекции</p>
+                <h2 className="section-title mt-6 text-[#111827]">Выберите свою коллекцию</h2>
+              </div>
+              <Link href="/catalog" className="hidden items-center gap-3 text-[10px] uppercase tracking-[0.22em] text-[#111827] md:flex">
+                Смотреть все матрасы <ArrowRight size={16} />
+              </Link>
+            </AnimateIn>
+            <AnimateIn delay={0.15}>
+              <ProductGrid initialProducts={seedProducts} limit={4} />
+            </AnimateIn>
+          </div>
+        </section>
+
         {/* Production */}
         <section id="about-company" className="py-24">
           <div className="container-wide bg-[#f3eee8] p-8 md:p-12 xl:p-16">
@@ -154,24 +172,6 @@ export default function Home() {
                   ))}
                 </ul>
               </div>
-            </AnimateIn>
-          </div>
-        </section>
-
-        {/* Collections */}
-        <section id="collections" className="pb-36 pt-32">
-          <div className="container-wide">
-            <AnimateIn className="mb-16 flex items-end justify-between gap-8">
-              <div>
-                <p className="eyebrow text-slate-400">Коллекции</p>
-                <h2 className="section-title mt-6 text-[#111827]">Выберите свою коллекцию</h2>
-              </div>
-              <Link href="/catalog" className="hidden items-center gap-3 text-[10px] uppercase tracking-[0.22em] text-[#111827] md:flex">
-                Смотреть все матрасы <ArrowRight size={16} />
-              </Link>
-            </AnimateIn>
-            <AnimateIn delay={0.15}>
-              <ProductGrid initialProducts={seedProducts} limit={4} />
             </AnimateIn>
           </div>
         </section>

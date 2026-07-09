@@ -274,6 +274,7 @@ async function configureLandingSettingsAdminView(strapi: any) {
         kaspiUrl: field('Kaspi магазин (ссылка)', { searchable: false, sortable: false }),
         cityPhones: field('Телефоны по городам', { searchable: false, sortable: false }),
         addresses: field('Адреса точек', { searchable: false, sortable: false }),
+        defaultBenefits: field('Преимущества по умолчанию (для новых товаров)', { searchable: false, sortable: false }),
       },
       [
         [{ name: 'productionVideo', size: 12 }],
@@ -295,6 +296,7 @@ async function configureLandingSettingsAdminView(strapi: any) {
         [{ name: 'kaspiUrl', size: 12 }],
         [{ name: 'cityPhones', size: 12 }],
         [{ name: 'addresses', size: 12 }],
+        [{ name: 'defaultBenefits', size: 12 }],
       ],
       ['productionAlt', 'mainPhone'],
     ),
@@ -448,6 +450,24 @@ export default {
               .plugin('content-manager')
               .service('uid')
               .generateUIDField({ contentTypeUID: PRODUCT_UID, field: 'slug', data })
+          }
+
+          // On create, if no benefits were provided, seed them from the editable
+          // "Преимущества по умолчанию" list in the landing settings single type.
+          // The product owner can still override them per product.
+          if (ctx.action === 'create' && (!Array.isArray(data.benefits) || data.benefits.length === 0)) {
+            const settings = await strapi
+              .documents('api::landing-setting.landing-setting')
+              .findFirst({ populate: { defaultBenefits: true } })
+
+            const defaults = settings?.defaultBenefits
+
+            if (Array.isArray(defaults) && defaults.length > 0) {
+              data.benefits = defaults.map((benefit: { title?: string; text?: string }) => ({
+                title: benefit.title,
+                text: benefit.text,
+              }))
+            }
           }
         }
       }

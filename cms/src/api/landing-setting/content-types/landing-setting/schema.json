@@ -66,6 +66,11 @@
       "type": "component",
       "repeatable": true,
       "component": "contact.address-line"
+    },
+    "defaultBenefits": {
+      "type": "component",
+      "repeatable": true,
+      "component": "product.benefit"
     }
   }
 }
