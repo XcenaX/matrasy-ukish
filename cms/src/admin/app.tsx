@@ -1,5 +1,5 @@
 import type { StrapiApp } from '@strapi/strapi/admin'
-import { unstable_useContentManagerContext, useFetchClient, useForm } from '@strapi/strapi/admin'
+import { useFetchClient, useForm } from '@strapi/strapi/admin'
 import * as React from 'react'
 
 import './custom.css'
@@ -15,37 +15,22 @@ const PRODUCT_UID = 'api::product.product'
  * rows. Runs once, only when creating a new product that has no benefits yet;
  * the editor can still edit/remove them before saving.
  */
-function DefaultBenefitsPrefill() {
-  const { model, isCreatingEntry } = unstable_useContentManagerContext()
+function DefaultBenefitsPrefill(props: { slug?: string }) {
   const { get } = useFetchClient()
   const addFieldRow = useForm('DefaultBenefitsPrefill', (state) => state.addFieldRow)
   const benefits = useForm('DefaultBenefitsPrefill', (state) => state.values?.benefits)
   const applied = React.useRef(false)
 
   React.useEffect(() => {
-    // eslint-disable-next-line no-console
-    console.info(
-      '[UKISH prefill] tick ' +
-        JSON.stringify({
-          model: String(model),
-          isCreatingEntry,
-          benefitsType: Array.isArray(benefits) ? `array(${benefits.length})` : typeof benefits,
-          addFieldRowType: typeof addFieldRow,
-          applied: applied.current,
-        }),
-    )
-
     if (applied.current) return
-    if (model !== PRODUCT_UID || !isCreatingEntry) {
-      // eslint-disable-next-line no-console
-      console.info('[UKISH prefill] guard-1 skip (model/create)')
-      return
-    }
-    if (Array.isArray(benefits) && benefits.length > 0) {
-      // eslint-disable-next-line no-console
-      console.info('[UKISH prefill] guard-2 skip (benefits not empty)')
-      return
-    }
+
+    // The injection zone passes the content-type uid as `slug`. Detect the
+    // create page from the URL — the content manager route ends with /create
+    // (its context `isCreatingEntry` flag is not reliable in this injected zone).
+    const isCreatePage = typeof window !== 'undefined' && window.location.pathname.endsWith('/create')
+
+    if (props.slug !== PRODUCT_UID || !isCreatePage) return
+    if (Array.isArray(benefits) && benefits.length > 0) return
 
     applied.current = true
 
@@ -53,19 +38,15 @@ function DefaultBenefitsPrefill() {
       .then((res: any) => {
         const data = res?.data?.data ?? res?.data
         const defaults = Array.isArray(data?.defaultBenefits) ? data.defaultBenefits : []
-        // eslint-disable-next-line no-console
-        console.info('[UKISH prefill] fetched defaults', defaults.length, 'addFieldRow=', typeof addFieldRow)
 
         defaults.forEach((benefit: { title?: string; text?: string }) => {
           addFieldRow('benefits', { title: benefit?.title ?? '', text: benefit?.text ?? '' })
         })
       })
-      .catch((err: any) => {
+      .catch(() => {
         applied.current = false
-        // eslint-disable-next-line no-console
-        console.error('[UKISH prefill] fetch failed', err?.message || err)
       })
-  }, [model, isCreatingEntry, benefits, addFieldRow, get])
+  }, [props.slug, benefits, addFieldRow, get])
 
   return null
 }
