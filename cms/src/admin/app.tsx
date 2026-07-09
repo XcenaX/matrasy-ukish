@@ -1,6 +1,50 @@
 import type { StrapiApp } from '@strapi/strapi/admin'
+import { unstable_useContentManagerContext, useFetchClient, useForm } from '@strapi/strapi/admin'
+import * as React from 'react'
 
 import './custom.css'
+
+const PRODUCT_UID = 'api::product.product'
+
+/**
+ * Pre-fills the "Преимущества" repeatable component on the product CREATE form
+ * with the editable default list stored on the landing settings single type.
+ *
+ * Rendered inside the content-manager edit view (within its Form provider via
+ * the `editView.right-links` injection zone), so it can use `useForm` to add
+ * rows. Runs once, only when creating a new product that has no benefits yet;
+ * the editor can still edit/remove them before saving.
+ */
+function DefaultBenefitsPrefill() {
+  const { model, isCreatingEntry } = unstable_useContentManagerContext()
+  const { get } = useFetchClient()
+  const addFieldRow = useForm('DefaultBenefitsPrefill', (state) => state.addFieldRow)
+  const benefits = useForm('DefaultBenefitsPrefill', (state) => state.values?.benefits)
+  const applied = React.useRef(false)
+
+  React.useEffect(() => {
+    if (applied.current) return
+    if (model !== PRODUCT_UID || !isCreatingEntry) return
+    if (Array.isArray(benefits) && benefits.length > 0) return
+
+    applied.current = true
+
+    get('/content-manager/single-types/api::landing-setting.landing-setting')
+      .then((res: any) => {
+        const data = res?.data?.data ?? res?.data
+        const defaults = Array.isArray(data?.defaultBenefits) ? data.defaultBenefits : []
+
+        defaults.forEach((benefit: { title?: string; text?: string }) => {
+          addFieldRow('benefits', { title: benefit?.title ?? '', text: benefit?.text ?? '' })
+        })
+      })
+      .catch(() => {
+        applied.current = false
+      })
+  }, [model, isCreatingEntry, benefits, addFieldRow, get])
+
+  return null
+}
 
 if (typeof window !== 'undefined') {
   window.localStorage.setItem('strapi-admin-language', 'ru')
@@ -114,6 +158,12 @@ export default {
     polishAdminNavigation()
     const observer = new MutationObserver(polishAdminNavigation)
     observer.observe(document.body, { childList: true, subtree: true })
+
+    app.getPlugin('content-manager').injectComponent('editView', 'right-links', {
+      name: 'ukish-default-benefits-prefill',
+      Component: DefaultBenefitsPrefill,
+    })
+
     console.info('UKISH admin customization loaded', Boolean(app))
   },
 }
