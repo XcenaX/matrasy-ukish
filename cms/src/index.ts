@@ -422,8 +422,39 @@ async function configureComponentAdminViews(strapi: any) {
   }
 }
 
+const PRODUCT_UID = 'api::product.product'
+
 export default {
-  register() {},
+  register({ strapi }: { strapi: any }) {
+    // Auto-generate a unique slug for products when none is provided.
+    //
+    // This must live in a document-service middleware, NOT a content-type
+    // lifecycle: entity validation (which requires a non-empty `slug`) runs
+    // before DB lifecycles fire, so a `beforeCreate` hook is too late and the
+    // create still fails with "slug must be defined." Middlewares wrap the
+    // whole document-service call and run before validation.
+    //
+    // `generateUIDField` slugifies `title` and guarantees uniqueness by
+    // appending -1, -2, ... when a matching slug already exists.
+    strapi.documents.use(async (ctx: any, next: any) => {
+      if (ctx.uid === PRODUCT_UID && (ctx.action === 'create' || ctx.action === 'update')) {
+        const data = ctx.params?.data
+        if (data) {
+          const slug = typeof data.slug === 'string' ? data.slug.trim() : data.slug
+          const title = typeof data.title === 'string' ? data.title.trim() : ''
+
+          if (!slug && title) {
+            data.slug = await strapi
+              .plugin('content-manager')
+              .service('uid')
+              .generateUIDField({ contentTypeUID: PRODUCT_UID, field: 'slug', data })
+          }
+        }
+      }
+
+      return next()
+    })
+  },
 
   async bootstrap({ strapi }: { strapi: any }) {
     const publicActions = [
