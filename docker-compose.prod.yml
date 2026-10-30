@@ -75,6 +75,7 @@ services:
   certbot:
     image: certbot/certbot
     container_name: ukish-certbot
+    restart: unless-stopped
     logging: *default-logging
     volumes:
       - letsencrypt:/etc/letsencrypt

@@ -57,6 +57,14 @@ docker compose -f docker-compose.prod.yml up -d   # запустит и certbot 
 docker compose -f docker-compose.prod.yml restart nginx
 ```
 
+Certbot продлевает сертификат сам, но nginx не подхватывает его без reload. Добавь ежедневный reload на хосте:
+
+```bash
+cat > /etc/cron.d/ukish-nginx-reload <<"EOF"
+17 4 * * * root docker exec ukish-nginx nginx -t -q >/dev/null 2>&1 && docker exec ukish-nginx nginx -s reload >/dev/null 2>&1
+EOF
+```
+
 Проверь:
 ```bash
 curl -I https://api.matras-ukish.kz
